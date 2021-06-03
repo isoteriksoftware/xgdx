@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * A GameCamera encapsulates a {@link Camera} object. Concrete subclasses makes use of a specific kind of camera.
- * The class also uses {@link UnitsHelper} object to define the visible regions of the world at a time (viewport) and also for unit conversions.
+ * The class also uses {@link GameUnitsHelper} object to define the visible regions of the world at a time (viewport) and also for unit conversions.
  *
  * @author isoteriksoftware
  */
@@ -19,42 +19,42 @@ public abstract class GameCamera {
 
     protected Viewport viewport;
 
-    protected UnitsHelper unitsHelper;
+    protected GameUnitsHelper gameUnitsHelper;
 
     /**
-     * Creates a new scene given a viewport and an instance of {@link UnitsHelper} for unit conversions.
+     * Creates a new scene given a viewport and an instance of {@link GameUnitsHelper} for unit conversions.
      * <strong>Note:</strong> the {@link Camera} is retrieved from the viewport passed.
      * @param viewport the viewport
-     * @param unitsHelper an instance of {@link UnitsHelper}
+     * @param gameUnitsHelper an instance of {@link GameUnitsHelper}
      */
-    public GameCamera(Viewport viewport, UnitsHelper unitsHelper) {
+    public GameCamera(Viewport viewport, GameUnitsHelper gameUnitsHelper) {
         this.viewport = viewport;
-        setup(viewport, unitsHelper);
+        setup(viewport, gameUnitsHelper);
     }
 
     /**
-     * Creates a new instance given an instance of {@link UnitsHelper} for unit conversions. The viewport defaults to an {@link ExtendViewport}.
-     * @param unitsHelper an instance of {@link UnitsHelper}
+     * Creates a new instance given an instance of {@link GameUnitsHelper} for unit conversions. The viewport defaults to an {@link ExtendViewport}.
+     * @param gameUnitsHelper an instance of {@link GameUnitsHelper}
      * @param camera the camera to use
      */
-    public GameCamera(UnitsHelper unitsHelper, Camera camera)
-    { this(new ExtendViewport(unitsHelper.getWorldWidth(), unitsHelper.getWorldHeight(),
-            unitsHelper.getWorldWidth(), unitsHelper.getWorldHeight(), camera), unitsHelper); }
+    public GameCamera(GameUnitsHelper gameUnitsHelper, Camera camera)
+    { this(new ExtendViewport(gameUnitsHelper.getWorldWidth(), gameUnitsHelper.getWorldHeight(),
+            gameUnitsHelper.getWorldWidth(), gameUnitsHelper.getWorldHeight(), camera), gameUnitsHelper); }
 
     /**
      *
-     * @return the {@link UnitsHelper} that defines the visible region of the world seen by this camera at a time
+     * @return the {@link GameUnitsHelper} that defines the visible region of the world seen by this camera at a time
      */
-    public UnitsHelper getUnitsHelper()
-    { return unitsHelper; }
+    public GameUnitsHelper getUnitsHelper()
+    { return gameUnitsHelper; }
 
     /**
      * Changes the viewport and world units used by this camera
      * @param viewport the new viewport
-     * @param unitsHelper the new world units
+     * @param gameUnitsHelper the new world units
      */
-    public void setup(Viewport viewport, UnitsHelper unitsHelper) {
-        this.unitsHelper = unitsHelper;
+    public void setup(Viewport viewport, GameUnitsHelper gameUnitsHelper) {
+        this.gameUnitsHelper = gameUnitsHelper;
         this.viewport = viewport;
         this.camera = viewport.getCamera();
     }
