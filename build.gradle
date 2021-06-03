@@ -7,13 +7,23 @@ plugins {
 group 'com.isoterik.xgdx'
 version '1.0.0-SNAPSHOT'
 
+ext {
+    gdxVersion = '1.10.0'
+}
+
 repositories {
     mavenCentral()
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    jcenter()
 }
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
 }
 
 test {
