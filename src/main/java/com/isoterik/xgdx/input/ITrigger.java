@@ -1,4 +1,4 @@
-package com.isoterik.xgdx.input;
+package com.isoterik.mgdx.input;
 
 /**
  * The base interface for all triggers.

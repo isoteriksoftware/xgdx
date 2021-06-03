@@ -1,15 +1,15 @@
-package com.isoterik.xgdx;
+package com.isoterik.mgdx.utils;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.isoterik.xgdx.Transform;
+import com.isoterik.mgdx.Transform;
 
 /**
  * Provides convenient methods for working with both world units and screen (pixel) units.
  *
  * @author isoteriksoftware
  */
-public class GameUnitsHelper {
+public class WorldUnits {
     private final float unit;
     private final float ppu;
     private final float worldWidth;
@@ -21,8 +21,8 @@ public class GameUnitsHelper {
      * @param pixelsHeight number of vertical pixels
      * @param pixelsPerUnit how many pixels make one world unit
      */
-    public GameUnitsHelper(float pixelsWidth, float pixelsHeight,
-                           float pixelsPerUnit) {
+    public WorldUnits(float pixelsWidth, float pixelsHeight,
+                      float pixelsPerUnit) {
         ppu = pixelsPerUnit;
 
         worldWidth = pixelsWidth/ ppu;

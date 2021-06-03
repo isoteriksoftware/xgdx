@@ -1,10 +1,13 @@
-package com.isoterik.xgdx;
+package com.isoterik.mgdx.m2d;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.isoterik.mgdx.GameCamera;
+import com.isoterik.mgdx.MinGdx;
+import com.isoterik.mgdx.utils.WorldUnits;
 
 /**
  * A game camera that wraps an {@link OrthographicCamera} for rendering in 2D space.
@@ -17,31 +20,31 @@ public class GameCamera2d extends GameCamera {
     private Color backgroundColor;
 
     /**
-     * Creates a new scene given a viewport and an instance of {@link GameUnitsHelper} for unit conversions.
+     * Creates a new scene given a viewport and an instance of {@link WorldUnits} for unit conversions.
      * <strong>Note:</strong> an {@link OrthographicCamera} will be created.
      * @param viewport the viewport
-     * @param gameUnitsHelper an instance of {@link GameUnitsHelper}
+     * @param worldUnits an instance of {@link WorldUnits}
      */
-    public GameCamera2d(Viewport viewport, GameUnitsHelper gameUnitsHelper) {
-        super(viewport, gameUnitsHelper);
+    public GameCamera2d(Viewport viewport, WorldUnits worldUnits) {
+        super(viewport, worldUnits);
         this.spriteBatch = new SpriteBatch();
         this.backgroundColor = new Color(1, 0, 0, 1);
 
         if (camera == null || !(camera instanceof  OrthographicCamera))
-            camera = new OrthographicCamera(gameUnitsHelper.getWorldWidth(), gameUnitsHelper.getWorldHeight());
+            camera = new OrthographicCamera(worldUnits.getWorldWidth(), worldUnits.getWorldHeight());
 
-        getCamera().position.set(gameUnitsHelper.getWorldWidth() * .5f, gameUnitsHelper.getWorldHeight() * .5f, 0);
+        getCamera().position.set(worldUnits.getWorldWidth() * .5f, worldUnits.getWorldHeight() * .5f, 0);
         viewport.setCamera(camera);
     }
 
     /**
-     * Creates a new instance given an instance of {@link GameUnitsHelper} for unit conversions. The viewport defaults to an {@link ExtendViewport}.
-     * @param gameUnitsHelper an instance of {@link GameUnitsHelper}
+     * Creates a new instance given an instance of {@link WorldUnits} for unit conversions. The viewport defaults to an {@link ExtendViewport}.
+     * @param worldUnits an instance of {@link WorldUnits}
      */
-    public GameCamera2d(GameUnitsHelper gameUnitsHelper) {
-        this(new ExtendViewport(gameUnitsHelper.getWorldWidth(), gameUnitsHelper.getWorldHeight(),
-                new OrthographicCamera(gameUnitsHelper.getWorldWidth(), gameUnitsHelper.getWorldHeight())),
-                gameUnitsHelper);
+    public GameCamera2d(WorldUnits worldUnits) {
+        this(new ExtendViewport(worldUnits.getWorldWidth(), worldUnits.getWorldHeight(),
+                new OrthographicCamera(worldUnits.getWorldWidth(), worldUnits.getWorldHeight())),
+                worldUnits);
     }
 
     /**
@@ -49,7 +52,7 @@ public class GameCamera2d extends GameCamera {
      * The viewport defaults to an {@link ExtendViewport}.
      */
     public GameCamera2d() {
-        this(new GameUnitsHelper(MinGdx.instance().defaultSettings.VIEWPORT_WIDTH, MinGdx.instance().defaultSettings.VIEWPORT_HEIGHT,
+        this(new WorldUnits(MinGdx.instance().defaultSettings.VIEWPORT_WIDTH, MinGdx.instance().defaultSettings.VIEWPORT_HEIGHT,
                 MinGdx.instance().defaultSettings.PIXELS_PER_UNIT));
     }
 
@@ -86,10 +89,10 @@ public class GameCamera2d extends GameCamera {
     { return (OrthographicCamera)camera; }
 
     @Override
-    public void setup(Viewport viewport, GameUnitsHelper gameUnitsHelper) {
-        super.setup(viewport, gameUnitsHelper);
-        camera = new OrthographicCamera(gameUnitsHelper.getWorldWidth(), gameUnitsHelper.getWorldHeight());
-        camera.position.set(gameUnitsHelper.getWorldWidth() * .5f, gameUnitsHelper.getWorldHeight() * .5f, 0);
+    public void setup(Viewport viewport, WorldUnits worldUnits) {
+        super.setup(viewport, worldUnits);
+        camera = new OrthographicCamera(worldUnits.getWorldWidth(), worldUnits.getWorldHeight());
+        camera.position.set(worldUnits.getWorldWidth() * .5f, worldUnits.getWorldHeight() * .5f, 0);
         viewport.setCamera(camera);
     }
 

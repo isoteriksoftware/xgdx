@@ -1,4 +1,4 @@
-package com.isoterik.xgdx;
+package com.isoterik.mgdx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -9,15 +9,24 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.isoterik.xgdx.input.InputManager;
-import com.isoterik.xgdx.GameCamera2d;
-import com.isoterik.xgdx.components.SpriteRenderer;
-import com.isoterik.xgdx.GameUnitsHelper;
+import com.isoterik.mgdx.input.InputManager;
+import com.isoterik.mgdx.m2d.GameCamera2d;
+import com.isoterik.mgdx.m2d.components.SpriteRenderer;
+import com.isoterik.mgdx.m2d.components.physics.Physics2d;
+import com.isoterik.mgdx.m2d.physics.Collision2d;
+import com.isoterik.mgdx.utils.WorldUnits;
 
 /**
  * A Scene contains the {@link GameObject}s of your game. Think of each Scene as a unique level of your game.
@@ -31,11 +40,19 @@ import com.isoterik.xgdx.GameUnitsHelper;
  * Layers are processed top-down; layers added first are processed first (this can be used to manipulate how GameObjects are rendered.)
  * A default layer is provided so you don't have to use layers if you don't need to.
  * <p>
+ *
+ * Physics is also managed by the scene. Box2D is used to manage 2D physics simulations.
+ * For Box2D, every scene has its own instance of {@link World}. The scene provides its own implementation of {@link ContactListener}; so manually calling
+ * {@link World#setContactListener(ContactListener)} will prevent some minGdx physics features from working correctly. <strong>If you need to extend the default
+ * implementation of the {@link ContactListener}, simply override the needed methods and don't forget to call the super class's implementation!</strong>.
+ * <p>
+ * There is currently no support for 3D physics simulation.
+ * <p>
  * Every scene has a {@link Stage} instance for working with UI elements. The stage is already setup to update, receive input and render; you don't have do these yourself.
  *
  * @author isoteriksoftware
  */
-public class Scene  {
+public class Scene implements ContactListener {
     /** The name of the default layer. Use this to add {@link GameObject}s to the default layer. */
     public static final String DEFAULT_LAYER = "MGDX_DEFAULT_LAYER";
 

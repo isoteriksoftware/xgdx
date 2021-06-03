@@ -1,4 +1,4 @@
-package com.isoterik.xgdx.input;
+package com.isoterik.mgdx.input;
 
 /**
  * The base listener for all input listeners. It does nothing on its own, its sole purpose is to establish a relationship between the listeners.

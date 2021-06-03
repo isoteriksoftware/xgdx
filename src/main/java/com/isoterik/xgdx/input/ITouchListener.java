@@ -1,4 +1,4 @@
-package com.isoterik.xgdx.input;
+package com.isoterik.mgdx.input;
 
 /**
  * Register an instance of this interface and a {@link TouchTrigger} with {@link InputManager} to define what happens when a touch event occurs.

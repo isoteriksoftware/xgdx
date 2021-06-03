@@ -1,4 +1,4 @@
-package com.isoterik.xgdx;
+package com.isoterik.mgdx;
 
 import com.badlogic.gdx.utils.Array;
 
@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
  * @author isoteriksoftware
  */
 public class Layer {
-    private final Array<GameObject> gameObjects;
+    private Array<GameObject> gameObjects;
 
     private String name;
 

@@ -1,4 +1,4 @@
-package com.isoterik.xgdx.input;
+package com.isoterik.mgdx.input;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.Input.Keys;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
-import com.isoterik.xgdx.Scene;
+import com.isoterik.mgdx.Scene;
 
 /**
  * An instance of this class is used to manage all input-related tasks of a {@link Scene}.
@@ -422,7 +422,7 @@ public class InputManager extends InputAdapter implements GestureDetector.Gestur
 
 	}
 
-	private void mapTouchListener(String mappingName, ITouchListener listener) {
+	private void mapListener(String mappingName, ITouchListener listener) {
 		Array<ITouchListener> listeners =
 				mappedTouchListeners.containsKey(mappingName) ?
 						mappedTouchListeners.get(mappingName) : new Array<>();
@@ -432,7 +432,7 @@ public class InputManager extends InputAdapter implements GestureDetector.Gestur
 
 	}
 
-	private void mapKeyListener(String mappingName, IKeyListener listener) {
+	private void mapListener(String mappingName, IKeyListener listener) {
 		Array<IKeyListener> listeners =
 				mappedKeyListeners.containsKey(mappingName) ?
 						mappedKeyListeners.get(mappingName) : new Array<>();
@@ -442,7 +442,7 @@ public class InputManager extends InputAdapter implements GestureDetector.Gestur
 
 	}
 
-	private void mapGestureListener(String mappingName, IGestureListener listener) {
+	private void mapListener(String mappingName, IGestureListener listener) {
 		Array<IGestureListener> listeners =
 				mappedGestureListeners.containsKey(mappingName) ?
 						mappedGestureListeners.get(mappingName) : new Array<>();
@@ -460,19 +460,19 @@ public class InputManager extends InputAdapter implements GestureDetector.Gestur
 	 */
 	public void mapListener(String mappingName, InputListener listener, InputListener... listeners) {
 		if (listener instanceof ITouchListener)
-			mapTouchListener(mappingName, (ITouchListener)listener);
+			mapListener(mappingName, (ITouchListener)listener);
 		else if (listener instanceof IKeyListener)
-			mapKeyListener(mappingName, (IKeyListener)listener);
+			mapListener(mappingName, (IKeyListener)listener);
 		else if (listener instanceof IGestureListener)
-			mapGestureListener(mappingName, (IGestureListener)listener);
+			mapListener(mappingName, (IGestureListener)listener);
 
 		for (InputListener lst : listeners) {
 			if (lst instanceof ITouchListener)
-				mapTouchListener(mappingName, (ITouchListener)lst);
+				mapListener(mappingName, (ITouchListener)lst);
 			else if (lst instanceof IKeyListener)
-				mapKeyListener(mappingName, (IKeyListener)lst);
+				mapListener(mappingName, (IKeyListener)lst);
 			else if (lst instanceof IGestureListener)
-				mapGestureListener(mappingName, (IGestureListener)lst);
+				mapListener(mappingName, (IGestureListener)lst);
 		}
 	}
 
@@ -548,21 +548,21 @@ public class InputManager extends InputAdapter implements GestureDetector.Gestur
 			addGestureListener((GestureTrigger) trigger, (IGestureListener) listener);
 	}
 
-	public void addTouchListener(TouchTrigger trigger, ITouchListener listener) {
+	private void addTouchListener(TouchTrigger trigger, ITouchListener listener) {
 		if (touchListeners.containsKey(trigger))
 			return;
 
 		touchListeners.put(trigger, listener);
 	}
 
-	public void addKeyListener(KeyTrigger trigger, IKeyListener listener) {
+	private void addKeyListener(KeyTrigger trigger, IKeyListener listener) {
 		if (keyListeners.containsKey(trigger))
 			return;
 
 		keyListeners.put(trigger, listener);
 	}
 
-	public void addGestureListener(GestureTrigger trigger, IGestureListener listener) {
+	private void addGestureListener(GestureTrigger trigger, IGestureListener listener) {
 		if (gestureListeners.containsKey(trigger))
 			return;
 

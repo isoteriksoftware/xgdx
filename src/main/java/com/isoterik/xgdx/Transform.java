@@ -1,4 +1,4 @@
-package com.isoterik.xgdx;
+package com.isoterik.mgdx;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;

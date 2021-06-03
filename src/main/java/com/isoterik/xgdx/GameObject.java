@@ -1,56 +1,87 @@
-package com.isoterik.xgdx;
+package com.isoterik.mgdx;
 
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * A GameObject represents an entity in the game. A GameObject can't do anything on its own; you have to give it properties before it can do anything.
+ * A GameObject is a container; we have to add pieces to it to make into a character, a tree, a space ship or whatever else you would like it to be. Each piece
+ * is called a {@link Component}.
+ * <p>
+ *
+ * Every GameObject has a {@link Transform} component attached automatically and cannot be removed. This is because the Transform defines where the GameObject is located and
+ * how it is rotated and scaled; without a Transform, the GameObject would not have a location in the game world.
+ * <p>
+ *
+ * To create game objects, use the static factory methods: {@link #newInstance(String)} and {@link #newInstance()}
+ *
+ * @see Component
+ *
+ * @author isoteriksoftware
+ */
 public class GameObject {
-    protected String tag;
-
-    protected Scene scene;
+    protected final Array<Component> components;
+    protected final Array.ArrayIterator<Component> arrayIterator;
 
     public Transform transform;
 
-    protected Array<Component> components;
-    protected Array.ArrayIterator<Component> componentsIterator;
+    protected String tag;
 
-    private GameObject() {
-        this("Untagged");
-    }
+    protected Scene hostScene;
 
-    private GameObject(String tag) {
-        this.tag = tag;
+    public GameObject()
+    { this("Untagged"); }
+
+    public GameObject(String tag) {
         components = new Array<>();
-        componentsIterator = new Array.ArrayIterator<>(components, true);
+        arrayIterator = new Array.ArrayIterator<>(components,
+                true);
 
         transform = new Transform();
         transform.__setGameObject(this);
         components.add(transform);
-    }
 
-    public void __setScene(Scene scene) {
-        this.scene = scene;
-        for (Component comp : components)
-            comp.__setScene(scene);
-    }
-
-    public void __removeFromScene() {
-        for (Component comp : components)
-            comp.stop();
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
         this.tag = tag;
     }
 
-    public Transform getTransform() {
-        return transform;
+    /**
+     * Sets the scene where this game object resides.
+     * This method is called internally by the system. Do not call it directly!
+     * @param hostScene the host scene
+     */
+    public void __setHostScene(Scene hostScene) {
+        this.hostScene = hostScene;
+        for (Component comp : components)
+            comp.__setHostScene(hostScene);
     }
 
-    public void setTransform(Transform transform) {
-        this.transform = transform;
+    /**
+     *
+     * @return the scene where this game object resides
+     */
+    public Scene getHostScene()
+    { return hostScene; }
+
+    /**
+     * Sets the tag for this game object. It is not required to be unique.
+     * @param tag the tag
+     */
+    public void setTag(String tag)
+    { this.tag = tag; }
+
+    /**
+     *
+     * @return the tag for this game object
+     */
+    public String getTag()
+    { return tag; }
+
+    /**
+     * Called when this game object is removed from a scene.
+     * DO NOT CALL THIS METHOD!
+     */
+    public void __removeFromScene() {
+        for (Component comp : components)
+            comp.stop();
     }
 
     /**
@@ -68,8 +99,8 @@ public class GameObject {
             comp.componentAdded(component);
 
         // If this game object is already added to a scene then we need to alert the component
-        if (scene != null) {
-            component.__setScene(scene);
+        if (hostScene != null) {
+            component.__setHostScene(hostScene);
             component.start();
         }
 
@@ -178,10 +209,10 @@ public class GameObject {
      * @param iterationListener the iteration listener
      */
     public void __forEachComponent(__ComponentIterationListener iterationListener) {
-        componentsIterator.reset();
+        while (arrayIterator.hasNext())
+            iterationListener.onComponent(arrayIterator.next());
 
-        while (componentsIterator.hasNext())
-            iterationListener.onComponent(componentsIterator.next());
+        arrayIterator.reset();
     }
 
     /**
@@ -206,26 +237,3 @@ public class GameObject {
     public static GameObject newInstance()
     { return new GameObject(); }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

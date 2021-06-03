@@ -1,8 +1,9 @@
-package com.isoterik.xgdx;
+package com.isoterik.mgdx;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.isoterik.xgdx.input.InputManager;
+import com.isoterik.mgdx.input.InputManager;
+import com.isoterik.mgdx.m2d.physics.Collision2d;
 
 /**
  * A Component is a functional piece of a {@link GameObject}. Every component is an isolated functionality that can be attached to a {@link GameObject} to give that functionality to
@@ -56,6 +57,13 @@ public class Component {
     public void lateUpdate(float deltaTime) {}
 
     /**
+     * Called when the physics engine is updated.
+     * This is where you'll typically put physics related codes.
+     * @param deltaTime the time difference between the current frame and the previous frame.
+     */
+    public void fixedUpdate(float deltaTime) {}
+
+    /**
      * Called when the screen is resized.
      * @param newScreenWidth the new screen width (in pixels)
      * @param newScreenHeight the new screen height (in pixels)
@@ -73,21 +81,21 @@ public class Component {
      * @param shapeRenderer a shape renderer to draw with
      * @param gameCamera the camera used by the scene
      */
-    public void drawDebugLine(ShapeRenderer shapeRenderer, GameCamera2d gameCamera) {}
+    public void drawDebugLine(ShapeRenderer shapeRenderer, GameCamera gameCamera) {}
 
     /**
      * Called when the component should render debug drawings of type {@link com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType#Filled}
      * @param shapeRenderer a shape renderer to draw with
      * @param gameCamera the camera used by the scene
      */
-    public void drawDebugFilled(ShapeRenderer shapeRenderer, GameCamera2d gameCamera) {}
+    public void drawDebugFilled(ShapeRenderer shapeRenderer, GameCamera gameCamera) {}
 
     /**
      * Called when the component should render debug drawings of type {@link com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType#Point}
      * @param shapeRenderer a shape renderer to draw with
      * @param gameCamera the camera used by the scene
      */
-    public void drawDebugPoint(ShapeRenderer shapeRenderer, GameCamera2d gameCamera) {}
+    public void drawDebugPoint(ShapeRenderer shapeRenderer, GameCamera gameCamera) {}
 
     /**
      * Called when the component should pause.
@@ -129,6 +137,30 @@ public class Component {
     public void componentRemoved(Component component) {}
 
     /**
+     * Called when the host game object starts colliding in 2D space.
+     * @param collision the collision data
+     */
+    public void onCollisionEnter2d(Collision2d collision) {}
+
+    /**
+     * Called when the host game object stops colliding in 2D space.
+     * @param collision the collision data
+     */
+    public void onCollisionExit2d(Collision2d collision) {}
+
+    /**
+     * Called when the host game object's sensor starts colliding in 2D space.
+     * @param collision the collision data
+     */
+    public void onSensorEnter2d(Collision2d collision) {}
+
+    /**
+     * Called when the host game object's sensor stops colliding in 2D space.
+     * @param collision the collision data
+     */
+    public void onSensorExit2d(Collision2d collision) {}
+
+    /**
      * Components can be disabled. This determines if it is enabled or not
      * @param enabled is it enabled?
      */
@@ -155,7 +187,7 @@ public class Component {
      * This method is called internally by the system and should never be called directly!
      * @param scene the scene where the host game object resides
      */
-    public void __setScene(Scene scene) {
+    public void __setHostScene(Scene scene) {
         this.scene = scene;
 
         if (scene != null)

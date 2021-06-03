@@ -1,8 +1,8 @@
-package com.isoterik.xgdx.input;
+package com.isoterik.mgdx.input;
 
 /**
  * A trigger for touch events.
- * @see com.isoterik.xgdx.input.ITrigger
+ * @see com.isoterik.mgdx.input.ITrigger
  *
  * @author isoteriksoftware
  */
