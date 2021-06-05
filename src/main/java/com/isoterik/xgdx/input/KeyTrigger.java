@@ -1,8 +1,8 @@
-package com.isoterik.mgdx.input;
+package com.isoterik.xgdx.input;
 
 /**
  * A trigger for key events.
- * @see com.isoterik.mgdx.input.ITrigger
+ * @see com.isoterik.xgdx.input.ITrigger
  *
  * @author isoteriksoftware
  */
@@ -30,7 +30,7 @@ public class KeyTrigger extends Trigger {
     /**
      * @param keyCode the key code
      * @return a trigger that fires when a keyUp event occurs
-     * @see com.isoterik.mgdx.input.KeyEventData.KeyEvent
+     * @see com.isoterik.xgdx.input.KeyEventData.KeyEvent
      */
     public static KeyTrigger keyUpTrigger (int keyCode)
     { return new KeyTrigger(KeyEventData.upEvent(keyCode)); }
@@ -38,7 +38,7 @@ public class KeyTrigger extends Trigger {
     /**
      * @param keyCode the key code
      * @return a trigger that fires when a keyDown event occurs
-     * @see com.isoterik.mgdx.input.KeyEventData.KeyEvent
+     * @see com.isoterik.xgdx.input.KeyEventData.KeyEvent
      */
     public static KeyTrigger keyDownTrigger (int keyCode)
     { return new KeyTrigger(KeyEventData.downEvent(keyCode)); }
@@ -46,7 +46,7 @@ public class KeyTrigger extends Trigger {
     /**
      * @param keyChar the key character
      * @return a trigger that fires when a keyTyped event occurs
-     * @see com.isoterik.mgdx.input.KeyEventData.KeyEvent
+     * @see com.isoterik.xgdx.input.KeyEventData.KeyEvent
      */
     public static KeyTrigger keyTypedTrigger (char keyChar)
     { return new KeyTrigger(KeyEventData.typedEvent(keyChar)); }

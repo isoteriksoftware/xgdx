@@ -1,4 +1,4 @@
-package com.isoterik.mgdx;
+package com.isoterik.xgdx;
 
 public class ActorGameObject extends GameObject {
     public final ActorTransform actorTransform;
@@ -33,5 +33,5 @@ public class ActorGameObject extends GameObject {
     { return new ActorGameObject(); }
 
     public ActorTransform transform()
-    { return (ActorTransform) transform; }
+    { return actorTransform; }
 }

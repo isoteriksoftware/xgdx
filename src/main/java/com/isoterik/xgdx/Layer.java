@@ -1,4 +1,4 @@
-package com.isoterik.mgdx;
+package com.isoterik.xgdx;
 
 import com.badlogic.gdx.utils.Array;
 

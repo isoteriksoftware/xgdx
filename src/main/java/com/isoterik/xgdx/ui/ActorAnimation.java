@@ -1,12 +1,12 @@
-package com.isoterik.mgdx.ui;
+package com.isoterik.xgdx.ui;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.isoterik.mgdx.MinGdx;
-import com.isoterik.mgdx.Scene;
-import com.isoterik.mgdx.m2d.scenes.transition.TransitionDirection;
-import com.isoterik.mgdx.utils.WorldUnits;
+import com.isoterik.xgdx.XGdx;
+import com.isoterik.xgdx.Scene;
+import com.isoterik.xgdx.x2d.scenes.transition.TransitionDirection;
+import com.isoterik.xgdx.utils.GameUnits;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
@@ -39,10 +39,10 @@ public final class ActorAnimation {
         if(instance == null)
 			instance = new ActorAnimation();
 
-        Scene currentScene = MinGdx.instance().sceneManager.getCurrentScene();
+        Scene currentScene = XGdx.instance().sceneManager.getCurrentScene();
         if (currentScene != null && currentScene.getMainCamera() != null) {
-            WorldUnits worldUnits = currentScene.getMainCamera().getWorldUnits();
-            instance.setup(worldUnits.getScreenWidth(), worldUnits.getScreenHeight());
+            GameUnits gameUnits = currentScene.getMainCamera().getWorldUnits();
+            instance.setup(gameUnits.getScreenWidth(), gameUnits.getScreenHeight());
         }
 
         return(instance);

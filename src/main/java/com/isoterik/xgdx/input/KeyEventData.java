@@ -1,4 +1,4 @@
-package com.isoterik.mgdx.input;
+package com.isoterik.xgdx.input;
 
 import com.badlogic.gdx.utils.Pool;
 

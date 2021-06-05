@@ -1,4 +1,4 @@
-package com.isoterik.mgdx.input;
+package com.isoterik.xgdx.input;
 
 /**
  * The base class for all triggers.

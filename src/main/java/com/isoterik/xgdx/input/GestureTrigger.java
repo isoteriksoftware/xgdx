@@ -1,8 +1,8 @@
-package com.isoterik.mgdx.input;
+package com.isoterik.xgdx.input;
 
 /**
  * A trigger for gesture events.
- * @see com.isoterik.mgdx.input.ITrigger
+ * @see com.isoterik.xgdx.input.ITrigger
  *
  * @author isoteriksoftware
  */
@@ -30,7 +30,7 @@ public class GestureTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a fling event occurs
-     * @see com.isoterik.mgdx.input.GestureEventData.GestureEvent
+     * @see com.isoterik.xgdx.input.GestureEventData.GestureEvent
      */
     public static GestureTrigger flingTrigger ()
     { return new GestureTrigger(GestureEventData.flingEvent()); }
@@ -38,7 +38,7 @@ public class GestureTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a long press event occurs
-     * @see com.isoterik.mgdx.input.GestureEventData.GestureEvent
+     * @see com.isoterik.xgdx.input.GestureEventData.GestureEvent
      */
     public static GestureTrigger longPressTrigger ()
     { return new GestureTrigger(GestureEventData.longPressEvent()); }
@@ -46,7 +46,7 @@ public class GestureTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a pan event occurs
-     * @see com.isoterik.mgdx.input.GestureEventData.GestureEvent
+     * @see com.isoterik.xgdx.input.GestureEventData.GestureEvent
      */
     public static GestureTrigger panTrigger ()
     { return new GestureTrigger(GestureEventData.panEvent()); }
@@ -54,7 +54,7 @@ public class GestureTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a panStop event occurs
-     * @see com.isoterik.mgdx.input.GestureEventData.GestureEvent
+     * @see com.isoterik.xgdx.input.GestureEventData.GestureEvent
      */
     public static GestureTrigger panStopTrigger ()
     { return new GestureTrigger(GestureEventData.panStopEvent()); }
@@ -62,7 +62,7 @@ public class GestureTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a pinch event occurs
-     * @see com.isoterik.mgdx.input.GestureEventData.GestureEvent
+     * @see com.isoterik.xgdx.input.GestureEventData.GestureEvent
      */
     public static GestureTrigger pinchTrigger ()
     { return new GestureTrigger(GestureEventData.pinchEvent()); }
@@ -70,7 +70,7 @@ public class GestureTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a pinchStop event occurs
-     * @see com.isoterik.mgdx.input.GestureEventData.GestureEvent
+     * @see com.isoterik.xgdx.input.GestureEventData.GestureEvent
      */
     public static GestureTrigger pinchStopTrigger ()
     { return new GestureTrigger(GestureEventData.pinchStopEvent()); }
@@ -78,7 +78,7 @@ public class GestureTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a tap event occurs
-     * @see com.isoterik.mgdx.input.GestureEventData.GestureEvent
+     * @see com.isoterik.xgdx.input.GestureEventData.GestureEvent
      */
     public static GestureTrigger tapTrigger ()
     { return new GestureTrigger(GestureEventData.tapEvent()); }
@@ -86,7 +86,7 @@ public class GestureTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a doubleTap event occurs
-     * @see com.isoterik.mgdx.input.GestureEventData.GestureEvent
+     * @see com.isoterik.xgdx.input.GestureEventData.GestureEvent
      */
     public static GestureTrigger doubleTapTrigger ()
     { return new GestureTrigger(GestureEventData.doubleTapEvent()); }
@@ -94,7 +94,7 @@ public class GestureTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a zoom event occurs
-     * @see com.isoterik.mgdx.input.GestureEventData.GestureEvent
+     * @see com.isoterik.xgdx.input.GestureEventData.GestureEvent
      */
     public static GestureTrigger zoomTrigger ()
     { return new GestureTrigger(GestureEventData.zoomEvent()); }

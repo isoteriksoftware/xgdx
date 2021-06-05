@@ -1,12 +1,11 @@
-package com.isoterik.mgdx;
+package com.isoterik.xgdx;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.utils.Array;
-import com.isoterik.mgdx.m2d.scenes.transition.ISceneTransition;
+import com.isoterik.xgdx.x2d.scenes.transition.ISceneTransition;
 
 /**
  * A SceneManager manages the scenes in a game. It maintains a stack of {@link Scene#setStackable(boolean) stackable} scenes that can be revisited using {@link #revertToPreviousScene(ISceneTransition)}.
@@ -60,7 +59,7 @@ public final class SceneManager {
      */
     public void setCurrentScene (Scene scene, ISceneTransition sceneTransition) {
         if (!init) {
-            initVars();
+            initFields();
             init = true;
         }
 
@@ -83,7 +82,7 @@ public final class SceneManager {
             pushScene(scene);
     }
 
-    private void initVars() {
+    private void initFields() {
         int w = Gdx.graphics.getWidth();
         int h = Gdx.graphics.getHeight();
 
@@ -104,10 +103,7 @@ public final class SceneManager {
      */
     public void __render() {
         // get delta time and ensure an upper limit of one 60th second
-        float deltaTime = MinGdx.instance().getDeltaTime();
-
-        // update the AI clock
-        GdxAI.getTimepiece().update(deltaTime);
+        float deltaTime = XGdx.instance().getDeltaTime();
 
         if (nextScene == null) {    // no ongoing transition
             if (currScene != null) {

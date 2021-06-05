@@ -1,4 +1,4 @@
-package com.isoterik.mgdx;
+package com.isoterik.xgdx;
 
 import com.badlogic.gdx.utils.Array;
 
@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class GameObject {
     protected final Array<Component> components;
-    protected final Array.ArrayIterator<Component> arrayIterator;
+    protected final Array.ArrayIterator<Component> componentArrayIterator;
 
     public Transform transform;
 
@@ -33,7 +33,7 @@ public class GameObject {
 
     public GameObject(String tag) {
         components = new Array<>();
-        arrayIterator = new Array.ArrayIterator<>(components,
+        componentArrayIterator = new Array.ArrayIterator<>(components,
                 true);
 
         transform = new Transform();
@@ -209,10 +209,10 @@ public class GameObject {
      * @param iterationListener the iteration listener
      */
     public void __forEachComponent(__ComponentIterationListener iterationListener) {
-        while (arrayIterator.hasNext())
-            iterationListener.onComponent(arrayIterator.next());
+        while (componentArrayIterator.hasNext())
+            iterationListener.onComponent(componentArrayIterator.next());
 
-        arrayIterator.reset();
+        componentArrayIterator.reset();
     }
 
     /**

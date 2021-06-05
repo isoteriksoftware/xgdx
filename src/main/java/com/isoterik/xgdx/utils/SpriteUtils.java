@@ -1,10 +1,10 @@
-package com.isoterik.mgdx.utils;
+package com.isoterik.xgdx.utils;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.isoterik.mgdx.MinGdx;
-import com.isoterik.mgdx.io.GameAssetsLoader;
+import com.isoterik.xgdx.XGdx;
+import com.isoterik.xgdx.asset.GameAssetsLoader;
 
 /**
  * Provides some useful methods for working with sprites ({@link Texture}s and {@link TextureRegion}s)
@@ -67,7 +67,7 @@ public class SpriteUtils {
 		com.badlogic.gdx.utils.StringBuilder builder = new 
 			com.badlogic.gdx.utils.StringBuilder();
 		
-		GameAssetsLoader assets = MinGdx.instance().assets;
+		GameAssetsLoader assets = XGdx.instance().assets;
 		
 		for (int i = startingIndex; i <= stoppingIndex; i++) {
 			String index = forceDigits(i, digits, builder);

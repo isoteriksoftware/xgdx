@@ -1,8 +1,8 @@
-package com.isoterik.mgdx.input;
+package com.isoterik.xgdx.input;
 
 /**
  * A trigger for touch events.
- * @see com.isoterik.mgdx.input.ITrigger
+ * @see com.isoterik.xgdx.input.ITrigger
  *
  * @author isoteriksoftware
  */
@@ -30,7 +30,7 @@ public class TouchTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a touchUp event occurs.
-     * @see com.isoterik.mgdx.input.TouchEventData.TouchEvent
+     * @see com.isoterik.xgdx.input.TouchEventData.TouchEvent
      */
     public static TouchTrigger touchUpTrigger ()
     { return new TouchTrigger(TouchEventData.upEvent()); }
@@ -38,7 +38,7 @@ public class TouchTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a touchDown event occurs.
-     * @see com.isoterik.mgdx.input.TouchEventData.TouchEvent
+     * @see com.isoterik.xgdx.input.TouchEventData.TouchEvent
      */
     public static TouchTrigger touchDownTrigger ()
     { return new TouchTrigger(TouchEventData.downEvent()); }
@@ -46,7 +46,7 @@ public class TouchTrigger extends Trigger {
     /**
      *
      * @return a trigger that fires when a touchDragged event occurs.
-     * @see com.isoterik.mgdx.input.TouchEventData.TouchEvent
+     * @see com.isoterik.xgdx.input.TouchEventData.TouchEvent
      */
     public static TouchTrigger touchDraggedTrigger ()
     { return new TouchTrigger(TouchEventData.draggedEvent()); }

@@ -1,4 +1,4 @@
-package com.isoterik.mgdx.input;
+package com.isoterik.xgdx.input;
 
 /**
  * Register an instance of this interface and a {@link GestureTrigger} with {@link InputManager} to define what happens when a gesture event occurs.

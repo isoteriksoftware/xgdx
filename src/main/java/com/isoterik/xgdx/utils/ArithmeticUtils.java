@@ -1,4 +1,4 @@
-package com.isoterik.mgdx.utils;
+package com.isoterik.xgdx.utils;
 
 import com.badlogic.gdx.math.*;
 

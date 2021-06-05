@@ -1,7 +1,8 @@
-package com.isoterik.mgdx.audio;
+package com.isoterik.xgdx.audio;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.isoterik.xgdx.XGdx;
 
 /**
  * A singleton for managing game {@link Sound}s and {@link Music}s
@@ -16,7 +17,7 @@ public final class AudioManager {
 
 	/**
 	 * Initializes the manager.
-	 * This method is called internally by {@link com.isoterik.mgdx.MinGdx} and should never be called directly!
+	 * This method is called internally by {@link XGdx} and should never be called directly!
 	 */
 	public static void __init() {
 		instance = new AudioManager();

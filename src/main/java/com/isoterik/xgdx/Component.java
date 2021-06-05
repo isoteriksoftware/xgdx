@@ -1,9 +1,8 @@
-package com.isoterik.mgdx;
+package com.isoterik.xgdx;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.isoterik.mgdx.input.InputManager;
-import com.isoterik.mgdx.m2d.physics.Collision2d;
+import com.isoterik.xgdx.input.InputManager;
 
 /**
  * A Component is a functional piece of a {@link GameObject}. Every component is an isolated functionality that can be attached to a {@link GameObject} to give that functionality to
@@ -137,30 +136,6 @@ public class Component {
     public void componentRemoved(Component component) {}
 
     /**
-     * Called when the host game object starts colliding in 2D space.
-     * @param collision the collision data
-     */
-    public void onCollisionEnter2d(Collision2d collision) {}
-
-    /**
-     * Called when the host game object stops colliding in 2D space.
-     * @param collision the collision data
-     */
-    public void onCollisionExit2d(Collision2d collision) {}
-
-    /**
-     * Called when the host game object's sensor starts colliding in 2D space.
-     * @param collision the collision data
-     */
-    public void onSensorEnter2d(Collision2d collision) {}
-
-    /**
-     * Called when the host game object's sensor stops colliding in 2D space.
-     * @param collision the collision data
-     */
-    public void onSensorExit2d(Collision2d collision) {}
-
-    /**
      * Components can be disabled. This determines if it is enabled or not
      * @param enabled is it enabled?
      */
@@ -207,8 +182,10 @@ public class Component {
      * Adds a component to the host game object.
      * @param component the component
      */
-    public void addComponent(Component component)
-    { gameObject.addComponent(component); }
+    public void addComponent(Component component) {
+        if (gameObject != null)
+            gameObject.addComponent(component);
+    }
 
     /**
      * Gets a component of a particular type that is attached to the host game object.
@@ -217,8 +194,11 @@ public class Component {
      * @param <T> the type of component
      * @return the component found or null if none found
      */
-    public <T extends Component> T getComponent(Class<T> componentClass)
-    { return gameObject.getComponent(componentClass); }
+    public <T extends Component> T getComponent(Class<T> componentClass) {
+        if (gameObject != null)
+            return gameObject.getComponent(componentClass);
+        return null;
+    }
 
     /**
      * Gets components of a particular type that is attached to the host game object.
@@ -226,15 +206,21 @@ public class Component {
      * @param <T> the type of component
      * @return the components found or empty list if none found
      */
-    public <T extends Component> Array<T> getComponents(Class<T> componentClass)
-    { return gameObject.getComponents(componentClass); }
+    public <T extends Component> Array<T> getComponents(Class<T> componentClass) {
+        if (gameObject != null)
+            return gameObject.getComponents(componentClass);
+        return null;
+    }
 
     /**
      *
      * @return all the components attached to the host game object including this one.
      */
-    public Array<Component> getComponents()
-    { return gameObject.getComponents(); }
+    public Array<Component> getComponents() {
+        if (gameObject != null)
+            return gameObject.getComponents();
+        return null;
+    }
 
     /**
      * Checks if a component of a particular type is attached to the host game object.
@@ -242,16 +228,22 @@ public class Component {
      * @param <T> the type of component
      * @return true if a component of such type exists. false otherwise
      */
-    public <T extends Component> boolean hasComponent(Class<T> componentClass)
-    { return gameObject.hasComponent(componentClass); }
+    public <T extends Component> boolean hasComponent(Class<T> componentClass) {
+        if (gameObject != null)
+            return gameObject.hasComponent(componentClass);
+        return null;
+    }
 
     /**
      * Checks if a component is attached to the host game object.
      * @param component the component to check.
      * @return true if a component of such type exists. false otherwise
      */
-    public boolean hasComponent(Component component)
-    { return gameObject.hasComponent(component); }
+    public boolean hasComponent(Component component) {
+        if (gameObject != null)
+            return gameObject.hasComponent(component);
+        return false;
+    }
 
     /**
      * Removes the first component found for a particular type that is attached to the host game object.
@@ -260,8 +252,11 @@ public class Component {
      * @param <T> the type of component
      * @return true if a component of such type is removed. false otherwise
      */
-    public <T extends Component> boolean removeComponent(Class<T> componentClass)
-    { return gameObject.removeComponent(componentClass); }
+    public <T extends Component> boolean removeComponent(Class<T> componentClass) {
+        if (gameObject != null)
+            return gameObject.removeComponent(componentClass);
+        return false;
+    }
 
     /**
      * Removes all component of a particular type that is attached to the host game object.
@@ -269,8 +264,10 @@ public class Component {
      * @param componentClass the class of the component
      * @param <T> the type of component
      */
-    public <T extends Component> void removeComponents(Class<T> componentClass)
-    { gameObject.removeComponents(componentClass); }
+    public <T extends Component> void removeComponents(Class<T> componentClass) {
+        if (gameObject != null)
+            gameObject.removeComponents(componentClass);
+    }
 
     /**
      * Removes a component attached to the host game object.
@@ -278,8 +275,11 @@ public class Component {
      * @param component the component to remove.
      * @return true if the component was removed. false otherwise
      */
-    public boolean removeComponent(Component component)
-    { return gameObject.removeComponent(component); }
+    public boolean removeComponent(Component component) {
+        if (gameObject != null)
+            return gameObject.removeComponent(component);
+        return false;
+    }
 
     /**
      * Removes a game object from the host scene. This will have no effect if there is no existing host scene.
