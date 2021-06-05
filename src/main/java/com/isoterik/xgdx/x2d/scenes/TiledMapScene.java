@@ -19,7 +19,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.isoterik.xgdx.GameObject;
 import com.isoterik.xgdx.Scene;
@@ -108,11 +107,6 @@ public class TiledMapScene extends Scene {
                 go.__forEachComponent(renderIter);
             }
             batch.end();
-        }
-
-        if (renderPhysicsDebugLines) {
-            assert mainCamera != null;
-            physicsDebugRenderer2d.render(physicsWorld2d, mainCamera.getCamera().combined);
         }
 
         // Render debug drawings

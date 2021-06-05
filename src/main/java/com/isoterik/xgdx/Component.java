@@ -231,7 +231,7 @@ public class Component {
     public <T extends Component> boolean hasComponent(Class<T> componentClass) {
         if (gameObject != null)
             return gameObject.hasComponent(componentClass);
-        return null;
+        return false;
     }
 
     /**
