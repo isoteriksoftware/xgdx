@@ -33,14 +33,20 @@ import com.isoterik.xgdx.utils.GameUnits;
  * @author isoteriksoftware
  */
 public class Scene {
+    /** A reference to the shared instance of {@link XGdx} */
+    XGdx xGdx;
+
     /** The name of the default layer. Use this to add {@link GameObject}s to the default layer. */
     public static final String DEFAULT_LAYER = "MGDX_DEFAULT_LAYER";
 
     private final Layer defaultLayer;
     protected Array<Layer> layers;
 
-    /** The main camera used for projecting a portion of the scene. */
-    protected GameCamera mainCamera;
+    /** The main camera object used for projecting a portion of the scene. */
+    protected GameObject mainCamera;
+
+    /** The default {@link GameUnits} used for this scene */
+    protected GameUnits gameUnits;
 
     /** The input manager for handling input. */
     protected final InputManager inputManager;
@@ -80,13 +86,15 @@ public class Scene {
      * Creates a new instance given a gravity.
      */
     public Scene() {
+        xGdx = XGdx.instance();
+
         onConstruction();
 
         defaultLayer = new Layer(DEFAULT_LAYER);
         layers = new Array<>();
         layers.add(defaultLayer);
 
-        mainCamera = new GameCamera2d();
+        mainCamera = GameObject.newInstance("MainCamera");
 
         inputManager = new InputManager(this);
 
@@ -117,46 +125,58 @@ public class Scene {
 
         lateUpdateIter = component -> {
             if (component.isEnabled())
-                component.lateUpdate(deltaTime);
+                component.postUpdate(deltaTime);
         };
 
         renderIter = component -> {
             if (component.isEnabled())
-                component.render(mainCamera);
+                component.render();
         };
 
         debugLineIter = component -> {
             if (component.isEnabled())
-                component.drawDebugLine(shapeRenderer, mainCamera);
+                component.drawDebugLine(shapeRenderer);
         };
 
         debugFilledIter = component -> {
             if (component.isEnabled())
-                component.drawDebugFilled(shapeRenderer, mainCamera);
+                component.drawDebugFilled(shapeRenderer);
         };
 
         debugPointIter = component -> {
             if (component.isEnabled())
-                component.drawDebugPoint(shapeRenderer, mainCamera);
+                component.drawDebugPoint(shapeRenderer);
         };
 
-        destroyIter = component -> component.destroy();
+        destroyIter = Component::destroy;
 
-        GameUnits gameUnits = mainCamera.getWorldUnits();
+        GameCamera camera = new GameCamera2d();
+        mainCamera.addComponent(camera);
+
+        gameUnits = new GameUnits(xGdx.defaultSettings.VIEWPORT_WIDTH, xGdx.defaultSettings.VIEWPORT_HEIGHT,
+                xGdx.defaultSettings.PIXELS_PER_UNIT);
+
         setupCanvas(new StretchViewport(gameUnits.getScreenWidth(),
                 gameUnits.getScreenHeight()));
-        setupAnimationCanvas(mainCamera.getViewport());
+        setupAnimationCanvas(camera.getViewport());
 
         shapeRenderer = new ShapeRenderer();
     }
 
     /**
-     * This is called during construction. This is useful for setting default properties
+     * This is called during construction before instance fields are initialized. This is useful for setting default properties
      * that will be used during construction.
      *
-     * <strong>Most instance variables are not initialized yet, it is not safe to make use of them here!</strong>
+     * <strong>Most instance fields are not initialized yet, it is not safe to make use of them here!</strong>
      */
     protected void onConstruction() {
+    }
+
+    /**
+     * @return the current {@link GameUnits} instance.
+     */
+    public GameUnits getGameUnits() {
+        return gameUnits;
     }
 
     /**
@@ -186,7 +206,7 @@ public class Scene {
      * </ul>
      * <p>
      *
-     * <strong>Scenes are stackbale by default</strong>
+     * <strong>Scenes are stackable by default</strong>
      * @param stackable whether this scene should be stackable
      */
     public void setStackable(boolean stackable)
@@ -217,11 +237,7 @@ public class Scene {
         if (canvas != null)
             inputManager.getInputMultiplexer().removeProcessor(canvas);
 
-        if (canvas == null)
-            canvas = new Stage(viewport);
-        else
-            canvas.setViewport(viewport);
-
+        canvas = new Stage(viewport);
         inputManager.getInputMultiplexer().addProcessor(canvas);
     }
 
@@ -231,10 +247,7 @@ public class Scene {
      * @param viewport the viewport for scaling UI elements
      */
     public void setupAnimationCanvas(Viewport viewport) {
-        if (animationCanvas == null)
-            animationCanvas = new Stage(viewport);
-        else
-            animationCanvas.setViewport(viewport);
+        animationCanvas = new Stage(viewport);
     }
 
     /**
@@ -262,8 +275,9 @@ public class Scene {
      * Changes the main camera used for projecting this scene.
      * @param mainCamera the main camera used for projecting this scene.
      */
-    public void setMainCamera(GameCamera mainCamera)
-    { this.mainCamera = mainCamera; }
+    public void setMainCamera(GameCamera mainCamera) {
+
+    }
 
     /**
      *

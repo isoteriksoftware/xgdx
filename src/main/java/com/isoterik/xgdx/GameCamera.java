@@ -13,47 +13,35 @@ import com.isoterik.xgdx.utils.GameUnits;
  *
  * @author isoteriksoftware
  */
-public abstract class GameCamera {
+public abstract class GameCamera extends Component {
     protected Camera camera;
 
     protected Viewport viewport;
 
-    protected GameUnits gameUnits;
-
     /**
-     * Creates a new scene given a viewport and an instance of {@link GameUnits} for unit conversions.
+     * Creates a new instance given a viewport.
      * <strong>Note:</strong> the {@link Camera} is retrieved from the viewport passed.
      * @param viewport the viewport
-     * @param gameUnits an instance of {@link GameUnits}
      */
-    public GameCamera(Viewport viewport, GameUnits gameUnits) {
+    public GameCamera(Viewport viewport) {
         this.viewport = viewport;
-        setup(viewport, gameUnits);
+        setup(viewport);
     }
 
     /**
-     * Creates a new instance given an instance of {@link GameUnits} for unit conversions. The viewport defaults to an {@link ExtendViewport}.
+     * Creates a new instance given an instance of {@link GameUnits} for viewport dimensions. The viewport defaults to an {@link ExtendViewport}.
      * @param gameUnits an instance of {@link GameUnits}
      * @param camera the camera to use
      */
     public GameCamera(GameUnits gameUnits, Camera camera)
     { this(new ExtendViewport(gameUnits.getWorldWidth(), gameUnits.getWorldHeight(),
-            gameUnits.getWorldWidth(), gameUnits.getWorldHeight(), camera), gameUnits); }
+            gameUnits.getWorldWidth(), gameUnits.getWorldHeight(), camera)); }
 
     /**
-     *
-     * @return the {@link GameUnits} that defines the visible region of the world seen by this camera at a time
-     */
-    public GameUnits getWorldUnits()
-    { return gameUnits; }
-
-    /**
-     * Changes the viewport and world units used by this camera
+     * Changes the viewport used by this camera
      * @param viewport the new viewport
-     * @param gameUnits the new world units
      */
-    public void setup(Viewport viewport, GameUnits gameUnits) {
-        this.gameUnits = gameUnits;
+    public void setup(Viewport viewport) {
         this.viewport = viewport;
         this.camera = viewport.getCamera();
     }
@@ -83,17 +71,8 @@ public abstract class GameCamera {
     public Camera getCamera()
     { return camera; }
 
-    /**
-     * Called when the screen is resized.
-     * This method is called internally and should never be called directly
-     * @param width the new screen width
-     * @param height the new screen height
-     */
-    public void __resize(int width, int height)
-    { viewport.update(width, height, true); }
-
-    /**
-     * Called when the {@link Scene} is disposing used resources.
-     */
-    public abstract void __dispose();
+    @Override
+    public void resize(int newScreenWidth, int newScreenHeight) {
+        viewport.update(newScreenWidth, newScreenHeight, true);
+    }
 }

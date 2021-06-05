@@ -20,20 +20,19 @@ public class GameCamera2d extends GameCamera {
     private Color backgroundColor;
 
     /**
-     * Creates a new scene given a viewport and an instance of {@link GameUnits} for unit conversions.
-     * <strong>Note:</strong> an {@link OrthographicCamera} will be created.
+     * Creates a new instance given a viewport.
+     * * <strong>Note:</strong> an {@link OrthographicCamera} will be created if it doesn't exist.
      * @param viewport the viewport
-     * @param gameUnits an instance of {@link GameUnits}
      */
-    public GameCamera2d(Viewport viewport, GameUnits gameUnits) {
-        super(viewport, gameUnits);
+    public GameCamera2d(Viewport viewport) {
+        super(viewport);
         this.spriteBatch = new SpriteBatch();
         this.backgroundColor = new Color(1, 0, 0, 1);
 
         if (camera == null || !(camera instanceof  OrthographicCamera))
-            camera = new OrthographicCamera(gameUnits.getWorldWidth(), gameUnits.getWorldHeight());
+            camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
 
-        getCamera().position.set(gameUnits.getWorldWidth() * .5f, gameUnits.getWorldHeight() * .5f, 0);
+        getCamera().position.set(viewport.getWorldWidth() * .5f, viewport.getWorldHeight() * .5f, 0);
         viewport.setCamera(camera);
     }
 
@@ -43,8 +42,7 @@ public class GameCamera2d extends GameCamera {
      */
     public GameCamera2d(GameUnits gameUnits) {
         this(new ExtendViewport(gameUnits.getWorldWidth(), gameUnits.getWorldHeight(),
-                new OrthographicCamera(gameUnits.getWorldWidth(), gameUnits.getWorldHeight())),
-                gameUnits);
+                new OrthographicCamera(gameUnits.getWorldWidth(), gameUnits.getWorldHeight())));
     }
 
     /**
@@ -89,16 +87,17 @@ public class GameCamera2d extends GameCamera {
     { return (OrthographicCamera)camera; }
 
     @Override
-    public void setup(Viewport viewport, GameUnits gameUnits) {
-        super.setup(viewport, gameUnits);
-        camera = new OrthographicCamera(gameUnits.getWorldWidth(), gameUnits.getWorldHeight());
-        camera.position.set(gameUnits.getWorldWidth() * .5f, gameUnits.getWorldHeight() * .5f, 0);
+    public void setup(Viewport viewport) {
+        super.setup(viewport);
+        camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
+        camera.position.set(viewport.getWorldWidth() * .5f, viewport.getWorldHeight() * .5f, 0);
         viewport.setCamera(camera);
     }
 
     @Override
-    public void __dispose()
-    { spriteBatch.dispose(); }
+    public void destroy() {
+        spriteBatch.dispose();
+    }
 }
 
 

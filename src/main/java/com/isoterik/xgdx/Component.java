@@ -43,6 +43,12 @@ public class Component {
     public void resume() {}
 
     /**
+     * Called before other components are updated.
+     * @param deltaTime the time difference between the current frame and the previous frame.
+     */
+    public void preUpdate(float deltaTime) {}
+
+    /**
      * Called when the component should update.
      * @param deltaTime the time difference between the current frame and the previous frame.
      */
@@ -53,14 +59,7 @@ public class Component {
      * This is useful for tasks that depends on the updated state of game objects.
      * @param deltaTime the time difference between the current frame and the previous frame.
      */
-    public void lateUpdate(float deltaTime) {}
-
-    /**
-     * Called when the physics engine is updated.
-     * This is where you'll typically put physics related codes.
-     * @param deltaTime the time difference between the current frame and the previous frame.
-     */
-    public void fixedUpdate(float deltaTime) {}
+    public void postUpdate(float deltaTime) {}
 
     /**
      * Called when the screen is resized.
@@ -70,31 +69,37 @@ public class Component {
     public void resize(int newScreenWidth, int newScreenHeight) {}
 
     /**
-     * Called when the component should render.
-     * @param gameCamera the camera used by the scene
+     * Called before other component renders.
      */
-    public void render(GameCamera gameCamera) {}
+    public void preRender() {}
+
+    /**
+     * Called when the component should render.
+     */
+    public void render() {}
+
+    /**
+     * Called after other component renders.
+     */
+    public void postRender() {}
 
     /**
      * Called when the component should render debug drawings of type {@link com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType#Line}
      * @param shapeRenderer a shape renderer to draw with
-     * @param gameCamera the camera used by the scene
      */
-    public void drawDebugLine(ShapeRenderer shapeRenderer, GameCamera gameCamera) {}
+    public void drawDebugLine(ShapeRenderer shapeRenderer) {}
 
     /**
      * Called when the component should render debug drawings of type {@link com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType#Filled}
      * @param shapeRenderer a shape renderer to draw with
-     * @param gameCamera the camera used by the scene
      */
-    public void drawDebugFilled(ShapeRenderer shapeRenderer, GameCamera gameCamera) {}
+    public void drawDebugFilled(ShapeRenderer shapeRenderer) {}
 
     /**
      * Called when the component should render debug drawings of type {@link com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType#Point}
      * @param shapeRenderer a shape renderer to draw with
-     * @param gameCamera the camera used by the scene
      */
-    public void drawDebugPoint(ShapeRenderer shapeRenderer, GameCamera gameCamera) {}
+    public void drawDebugPoint(ShapeRenderer shapeRenderer) {}
 
     /**
      * Called when the component should pause.
