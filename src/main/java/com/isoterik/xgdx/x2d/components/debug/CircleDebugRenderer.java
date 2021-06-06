@@ -69,7 +69,7 @@ public class CircleDebugRenderer extends BaseDebugRenderer {
 		Vector3 pos = gameObject.transform.position;
 		Vector3 size = gameObject.transform.size;
 
-		shapeRenderer.circle(pos.x + size.x *  .5f, pos.y + size.y * .5f, 
-			(size.x / size.y) * 4f, segments);
+		shapeRenderer.circle(pos.x + size.x *  .5f, pos.y + size.y * .5f,
+				size.x * .5f, segments);
 	}
 }

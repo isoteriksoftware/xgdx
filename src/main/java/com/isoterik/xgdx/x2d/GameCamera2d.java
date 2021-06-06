@@ -29,7 +29,7 @@ public class GameCamera2d extends GameCamera {
      */
     public GameCamera2d(Viewport viewport) {
         super(viewport);
-        this.spriteBatch = new SpriteBatch();
+        spriteBatch = new SpriteBatch();
         this.backgroundColor = new Color(1, 0, 0, 1);
 
         if (camera == null || !(camera instanceof  OrthographicCamera))
@@ -98,8 +98,25 @@ public class GameCamera2d extends GameCamera {
     }
 
     @Override
+    public void attach() {
+        if (spriteBatch == null)
+            spriteBatch = new SpriteBatch();
+    }
+
+    @Override
+    public void detach() {
+        if (spriteBatch != null) {
+            spriteBatch.dispose();
+            spriteBatch = null;
+        }
+    }
+
+    @Override
     public void destroy() {
-        spriteBatch.dispose();
+        if (spriteBatch != null) {
+            spriteBatch.dispose();
+            spriteBatch = null;
+        }
     }
 
     @Override
