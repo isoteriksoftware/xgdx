@@ -32,7 +32,7 @@ public final class ActorAnimation {
     private ActorAnimation(){}
 
     /**
-     * Returns a singleton instance. This will assume the dimensions of the current scene if it has a valid main camera
+     * Returns a singleton instance. This will assume the dimensions of the current scene if it has a valid {@link GameWorldUnits}
      * @return singleton instance.
      */
     public static ActorAnimation instance() {
@@ -40,8 +40,8 @@ public final class ActorAnimation {
 			instance = new ActorAnimation();
 
         Scene currentScene = XGdx.instance().sceneManager.getCurrentScene();
-        if (currentScene != null && currentScene.getMainCamera() != null) {
-            GameWorldUnits gameWorldUnits = currentScene.getGameUnits();
+        if (currentScene != null && currentScene.getGameWorldUnits() != null) {
+            GameWorldUnits gameWorldUnits = currentScene.getGameWorldUnits();
             instance.setup(gameWorldUnits.getScreenWidth(), gameWorldUnits.getScreenHeight());
         }
 

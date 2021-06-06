@@ -16,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.isoterik.xgdx.Component;
+import com.isoterik.xgdx.GameCamera;
 import com.isoterik.xgdx.GameObject;
 import com.isoterik.xgdx.x2d.GameCamera2d;
 
@@ -37,16 +38,23 @@ public class TiledMapRenderer extends Component {
     public final int horizontalTilesCount, verticalTilesCount;
 
     protected final TiledMap tiledMap;
+    protected final float unitScale;
 
     protected MapRenderer tiledMapRenderer;
 
+    protected GameCamera2d camera;
+
     /**
      * Creates a new instance given a tiled map and the unit scale to use.
+     * The unit scale is the equivalence of 1 pixel in the game (1 / Pixels Per Unit).
+     * Setting 1 as the unit scale means 1 pixel = 1 world unit.
+     * It will use the default main camera until it is changed.
      * @param tiledMap the tiled map
      * @param unitScale the unit scale
      */
     public TiledMapRenderer(TiledMap tiledMap, float unitScale) {
         this.tiledMap = tiledMap;
+        this.unitScale = unitScale;
 
         tileWidth = (int)tiledMap.getProperties().get("tilewidth");
         tileHeight = (int)tiledMap.getProperties().get("tileheight");
@@ -68,20 +76,43 @@ public class TiledMapRenderer extends Component {
     { this(new TmxMapLoader().load(mapFileName), unitScale); }
 
     /**
-     * Renders the map on the scene. Subclasses can override this method to provide custom rendering.
-     * <strong>Note:</strong> the map is always rendered first. Every other thing will be rendered on top of it including {@link GameObject}s that can be rendered.
-     * @param gameCamera2d the 2D game camera
+     * @return the current camera used for projection
      */
-    protected void renderTiledMap(GameCamera2d gameCamera2d) {
-        tiledMapRenderer.setView(gameCamera2d.getCamera());
+    public GameCamera2d getCamera() {
+        return camera;
+    }
+
+    /**
+     * Sets the camera to use for projection.
+     * @param camera the camera
+     */
+    public void setCamera(GameCamera2d camera) {
+        this.camera = camera;
+    }
+
+    /**
+     * Renders the map on the scene. Subclasses can override this method to provide custom rendering.
+     */
+    protected void renderTiledMap() {
         tiledMapRenderer.render();
     }
 
     @Override
+    public void preUpdate(float deltaTime) {
+        if (camera == null) {
+            GameCamera cam = scene.getMainCamera();
+            if (cam instanceof GameCamera2d)
+                camera = (GameCamera2d) cam;
+        }
+
+        if (camera != null)
+            tiledMapRenderer.setView(camera.getCamera());
+    }
+
+    @Override
     public void render(Array<GameObject> gameObjects) {
-        GameCamera2d gameCamera2d = getComponent(GameCamera2d.class);
-        if (gameCamera2d != null)
-            renderTiledMap(gameCamera2d);
+        if (camera != null)
+            renderTiledMap();
     }
 
     /**
@@ -92,7 +123,8 @@ public class TiledMapRenderer extends Component {
     { return tiledMapRenderer; }
 
     /**
-     * Sets the current map renderer
+     * Sets the current map renderer.
+     * <strrong>Note that you may have to dispose the renderer if possible.</strrong>
      * @param tiledMapRenderer a map renderer
      */
     public void setTiledMapRenderer(MapRenderer tiledMapRenderer)

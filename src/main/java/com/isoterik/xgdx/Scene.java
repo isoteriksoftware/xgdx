@@ -31,7 +31,7 @@ import com.isoterik.xgdx.utils.GameWorldUnits;
  */
 public class Scene {
     /** A reference to the shared instance of {@link XGdx} */
-    XGdx xGdx;
+    protected XGdx xGdx;
 
     /** The name of the default layer. Use this to add {@link GameObject}s to the default layer. */
     public static final String DEFAULT_LAYER = "MGDX_DEFAULT_LAYER";
@@ -187,7 +187,7 @@ public class Scene {
     /**
      * @return the current {@link GameWorldUnits} instance.
      */
-    public GameWorldUnits getGameUnits() {
+    public GameWorldUnits getGameWorldUnits() {
         return gameWorldUnits;
     }
 

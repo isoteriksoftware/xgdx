@@ -34,8 +34,7 @@ public class GameCamera extends Component {
      * @param camera the camera to use
      */
     public GameCamera(GameWorldUnits gameWorldUnits, Camera camera)
-    { this(new ExtendViewport(gameWorldUnits.getWorldWidth(), gameWorldUnits.getWorldHeight(),
-            gameWorldUnits.getWorldWidth(), gameWorldUnits.getWorldHeight(), camera)); }
+    { this(new ExtendViewport(gameWorldUnits.getWorldWidth(), gameWorldUnits.getWorldHeight(), camera)); }
 
     /**
      * Changes the viewport used by this camera
