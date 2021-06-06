@@ -3,11 +3,14 @@ package com.isoterik.xgdx.x2d;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.isoterik.xgdx.GameCamera;
+import com.isoterik.xgdx.GameObject;
 import com.isoterik.xgdx.XGdx;
-import com.isoterik.xgdx.utils.GameUnits;
+import com.isoterik.xgdx.utils.GameWorldUnits;
 
 /**
  * A game camera that wraps an {@link OrthographicCamera} for rendering in 2D space.
@@ -37,12 +40,12 @@ public class GameCamera2d extends GameCamera {
     }
 
     /**
-     * Creates a new instance given an instance of {@link GameUnits} for unit conversions. The viewport defaults to an {@link ExtendViewport}.
-     * @param gameUnits an instance of {@link GameUnits}
+     * Creates a new instance given an instance of {@link GameWorldUnits} for unit conversions. The viewport defaults to an {@link ExtendViewport}.
+     * @param gameWorldUnits an instance of {@link GameWorldUnits}
      */
-    public GameCamera2d(GameUnits gameUnits) {
-        this(new ExtendViewport(gameUnits.getWorldWidth(), gameUnits.getWorldHeight(),
-                new OrthographicCamera(gameUnits.getWorldWidth(), gameUnits.getWorldHeight())));
+    public GameCamera2d(GameWorldUnits gameWorldUnits) {
+        this(new ExtendViewport(gameWorldUnits.getWorldWidth(), gameWorldUnits.getWorldHeight(),
+                new OrthographicCamera(gameWorldUnits.getWorldWidth(), gameWorldUnits.getWorldHeight())));
     }
 
     /**
@@ -50,7 +53,7 @@ public class GameCamera2d extends GameCamera {
      * The viewport defaults to an {@link ExtendViewport}.
      */
     public GameCamera2d() {
-        this(new GameUnits(XGdx.instance().defaultSettings.VIEWPORT_WIDTH, XGdx.instance().defaultSettings.VIEWPORT_HEIGHT,
+        this(new GameWorldUnits(XGdx.instance().defaultSettings.VIEWPORT_WIDTH, XGdx.instance().defaultSettings.VIEWPORT_HEIGHT,
                 XGdx.instance().defaultSettings.PIXELS_PER_UNIT));
     }
 
@@ -97,6 +100,19 @@ public class GameCamera2d extends GameCamera {
     @Override
     public void destroy() {
         spriteBatch.dispose();
+    }
+
+    @Override
+    public void preRender(Array<GameObject> gameObjects) {
+        ScreenUtils.clear(backgroundColor);
+        camera.update();
+        spriteBatch.setProjectionMatrix(camera.combined);
+        spriteBatch.begin();
+    }
+
+    @Override
+    public void postRender(Array<GameObject> gameObjects) {
+        spriteBatch.end();
     }
 }
 

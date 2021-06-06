@@ -45,6 +45,36 @@ public class Layer {
     { return gameObjects; }
 
     /**
+     * Finds the first gameObject with the given tag.
+     * @param tag the gameObject's tag.
+     * @return the first gameObject with the given tag or null if none found.
+     */
+    public GameObject findGameObject(String tag) {
+        for (GameObject gameObject : gameObjects) {
+            if (gameObject.sameTag(tag))
+                return gameObject;
+        }
+
+        return null;
+    }
+
+    /**
+     * Finds all gameObjects with the given tag.
+     * @param tag the gameObjects tag.
+     * @return all gameObjects with the given tag or an empty array if none found.
+     */
+    public Array<GameObject> findGameObjects(String tag) {
+        Array<GameObject> result = new Array<>();
+
+        for (GameObject gameObject : gameObjects) {
+            if (gameObject.sameTag(tag))
+                result.add(gameObject);
+        }
+
+        return result;
+    }
+
+    /**
      * Sets a name for this layer.
      * @param name the name
      */

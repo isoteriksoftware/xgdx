@@ -139,9 +139,9 @@ public class GameObject {
     public <T extends Component> boolean removeComponent(Class<T> componentClass)
     { return removeComponent(getComponent(componentClass)); }
 
-    public <T extends Component> void removeComponents(Class<T> clazz) {
+    public <T extends Component> void removeComponents(Class<T> componentClass) {
         for (Component c : components) {
-            if (c.getClass() == clazz)
+            if (componentClass.isAssignableFrom(c.getClass()))
                 removeComponent(c);
         }
     }
@@ -155,7 +155,7 @@ public class GameObject {
      */
     public <T extends Component> T getComponent(Class<T> componentClass) {
         for (Component c : components) {
-            if (c.getClass() == componentClass)
+            if (componentClass.isAssignableFrom(c.getClass()))
                 return (T)c;
         }
 
@@ -172,7 +172,7 @@ public class GameObject {
         Array<T> comps = new Array<>();
 
         for (Component c : components) {
-            if (c.getClass() == componentClass)
+            if (componentClass.isAssignableFrom(c.getClass()))
                 comps.add((T)c);
         }
 
@@ -213,6 +213,15 @@ public class GameObject {
             iterationListener.onComponent(componentArrayIterator.next());
 
         componentArrayIterator.reset();
+    }
+
+    /**
+     * Checks if the provided tag equals the current tag of this gameObject.
+     * @param otherTag the tag to compare to.
+     * @return true if the tags are similar. false otherwise
+     */
+    public boolean sameTag(String otherTag) {
+        return this.tag.equals(otherTag);
     }
 
     /**

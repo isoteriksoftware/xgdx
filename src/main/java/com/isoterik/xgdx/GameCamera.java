@@ -3,17 +3,17 @@ package com.isoterik.xgdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.isoterik.xgdx.utils.GameUnits;
+import com.isoterik.xgdx.utils.GameWorldUnits;
 
 /**
  * A GameCamera encapsulates a {@link Camera} object. Concrete subclasses makes use of a specific kind of camera.
- * The class also uses {@link GameUnits} object to define the visible regions of the world at a time (viewport) and also for unit conversions.
+ * The class also uses {@link GameWorldUnits} object to define the visible regions of the world at a time (viewport) and also for unit conversions.
  *
  * @see com.isoterik.xgdx.x2d.GameCamera2d
  *
  * @author isoteriksoftware
  */
-public abstract class GameCamera extends Component {
+public class GameCamera extends Component {
     protected Camera camera;
 
     protected Viewport viewport;
@@ -29,13 +29,13 @@ public abstract class GameCamera extends Component {
     }
 
     /**
-     * Creates a new instance given an instance of {@link GameUnits} for viewport dimensions. The viewport defaults to an {@link ExtendViewport}.
-     * @param gameUnits an instance of {@link GameUnits}
+     * Creates a new instance given an instance of {@link GameWorldUnits} for viewport dimensions. The viewport defaults to an {@link ExtendViewport}.
+     * @param gameWorldUnits an instance of {@link GameWorldUnits}
      * @param camera the camera to use
      */
-    public GameCamera(GameUnits gameUnits, Camera camera)
-    { this(new ExtendViewport(gameUnits.getWorldWidth(), gameUnits.getWorldHeight(),
-            gameUnits.getWorldWidth(), gameUnits.getWorldHeight(), camera)); }
+    public GameCamera(GameWorldUnits gameWorldUnits, Camera camera)
+    { this(new ExtendViewport(gameWorldUnits.getWorldWidth(), gameWorldUnits.getWorldHeight(),
+            gameWorldUnits.getWorldWidth(), gameWorldUnits.getWorldHeight(), camera)); }
 
     /**
      * Changes the viewport used by this camera
@@ -74,5 +74,10 @@ public abstract class GameCamera extends Component {
     @Override
     public void resize(int newScreenWidth, int newScreenHeight) {
         viewport.update(newScreenWidth, newScreenHeight, true);
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        camera.update();
     }
 }

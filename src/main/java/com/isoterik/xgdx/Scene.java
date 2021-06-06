@@ -1,10 +1,7 @@
 package com.isoterik.xgdx;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,8 +10,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.isoterik.xgdx.input.InputManager;
 import com.isoterik.xgdx.x2d.GameCamera2d;
-import com.isoterik.xgdx.x2d.components.SpriteRenderer;
-import com.isoterik.xgdx.utils.GameUnits;
+import com.isoterik.xgdx.x2d.components.renderer.SpriteRenderer;
+import com.isoterik.xgdx.utils.GameWorldUnits;
 
 /**
  * A Scene contains the {@link GameObject}s of your game. Think of each Scene as a unique level of your game.
@@ -43,10 +40,10 @@ public class Scene {
     protected Array<Layer> layers;
 
     /** The main camera object used for projecting a portion of the scene. */
-    protected GameObject mainCamera;
+    protected GameObject mainCameraObject;
 
-    /** The default {@link GameUnits} used for this scene */
-    protected GameUnits gameUnits;
+    /** The default {@link GameWorldUnits} used for this scene */
+    protected GameWorldUnits gameWorldUnits;
 
     /** The input manager for handling input. */
     protected final InputManager inputManager;
@@ -55,8 +52,8 @@ public class Scene {
     private float deltaTime;
 
     // These iteration listeners prevent us from creating new instances every time!
-    protected GameObject.__ComponentIterationListener startIter, pauseIter,
-            resumeIter, updateIter, resizeIter, lateUpdateIter, renderIter,
+    protected GameObject.__ComponentIterationListener startIter, pauseIter, preRenderIter, postRenderIter,
+            resumeIter, preUpdateIter, updateIter, resizeIter, postUpdateIter, renderIter,
             debugLineIter, debugFilledIter, debugPointIter, destroyIter;
 
     // The state of the Scene
@@ -94,8 +91,6 @@ public class Scene {
         layers = new Array<>();
         layers.add(defaultLayer);
 
-        mainCamera = GameObject.newInstance("MainCamera");
-
         inputManager = new InputManager(this);
 
         startIter = component -> {
@@ -118,19 +113,34 @@ public class Scene {
                 component.resize(resizedWidth, resizedHeight);
         };
 
+        preUpdateIter = component -> {
+            if (component.isEnabled())
+                component.preUpdate(deltaTime);
+        };
+
         updateIter = component -> {
             if (component.isEnabled())
                 component.update(deltaTime);
         };
 
-        lateUpdateIter = component -> {
+        postUpdateIter = component -> {
             if (component.isEnabled())
                 component.postUpdate(deltaTime);
         };
 
+        preRenderIter = component -> {
+            if (component.isEnabled())
+                component.preRender(gameObjects);
+        };
+
         renderIter = component -> {
             if (component.isEnabled())
-                component.render();
+                component.render(gameObjects);
+        };
+
+        postRenderIter = component -> {
+            if (component.isEnabled())
+                component.postRender(gameObjects);
         };
 
         debugLineIter = component -> {
@@ -151,13 +161,15 @@ public class Scene {
         destroyIter = Component::destroy;
 
         GameCamera camera = new GameCamera2d();
-        mainCamera.addComponent(camera);
+        mainCameraObject = GameObject.newInstance("MainCamera");
+        mainCameraObject.addComponent(camera);
+        addGameObject(mainCameraObject);
 
-        gameUnits = new GameUnits(xGdx.defaultSettings.VIEWPORT_WIDTH, xGdx.defaultSettings.VIEWPORT_HEIGHT,
+        gameWorldUnits = new GameWorldUnits(xGdx.defaultSettings.VIEWPORT_WIDTH, xGdx.defaultSettings.VIEWPORT_HEIGHT,
                 xGdx.defaultSettings.PIXELS_PER_UNIT);
 
-        setupCanvas(new StretchViewport(gameUnits.getScreenWidth(),
-                gameUnits.getScreenHeight()));
+        setupCanvas(new StretchViewport(gameWorldUnits.getScreenWidth(),
+                gameWorldUnits.getScreenHeight()));
         setupAnimationCanvas(camera.getViewport());
 
         shapeRenderer = new ShapeRenderer();
@@ -173,10 +185,10 @@ public class Scene {
     }
 
     /**
-     * @return the current {@link GameUnits} instance.
+     * @return the current {@link GameWorldUnits} instance.
      */
-    public GameUnits getGameUnits() {
-        return gameUnits;
+    public GameWorldUnits getGameUnits() {
+        return gameWorldUnits;
     }
 
     /**
@@ -272,11 +284,12 @@ public class Scene {
     { return inputManager; }
 
     /**
-     * Changes the main camera used for projecting this scene.
-     * @param mainCamera the main camera used for projecting this scene.
+     * Changes the camera used for projecting this scene. This only changes the attached {@link GameCamera} and not the gameObject itself
+     * @param mainCamera the {@link GameCamera} for projecting this scene.
      */
-    public void setMainCamera(GameCamera mainCamera) {
-
+    public void setupMainCamera(GameCamera mainCamera) {
+        mainCameraObject.removeComponent(getMainCamera());
+        mainCameraObject.addComponent(mainCamera);
     }
 
     /**
@@ -284,10 +297,10 @@ public class Scene {
      * @return the main camera used for projecting this scene.
      */
     public GameCamera getMainCamera()
-    { return mainCamera; }
+    { return mainCameraObject.getComponent(GameCamera.class); }
 
     /**
-     * Finds a layer given a name.
+     * Finds a layer, given the name.
      * @param name the name of the layer to find.
      * @return the layer if found or null if not found
      */
@@ -496,18 +509,92 @@ public class Scene {
     }
 
     /**
+     * Finds the first gameObject with the given tag.
+     * @param tag the gameObject's tag.
+     * @return the first gameObject with the given tag or null if none found.
+     */
+    public GameObject findGameObject(String tag) {
+        for (Layer layer : layers) {
+            GameObject gameObject = layer.findGameObject(tag);
+            if (gameObject != null)
+                return gameObject;
+        }
+
+        return null;
+    }
+
+    /**
+     * Finds all gameObjects with the given tag.
+     * @param tag the gameObjects tag.
+     * @return all gameObjects with the given tag or an empty array if none found.
+     */
+    public Array<GameObject> findGameObjects(String tag) {
+        Array<GameObject> gameObjects = new Array<>();
+
+        for (Layer layer : layers)
+            gameObjects.addAll(layer.findGameObjects(tag));
+
+        return gameObjects;
+    }
+
+    protected GameObject findGameObject(String tag, Layer layer) {
+        if (layer == null)
+            return null;
+
+        return layer.findGameObject(tag);
+    }
+
+    protected Array<GameObject> findGameObjects(String tag, Layer layer) {
+        if (layer == null)
+            return null;
+
+        return layer.findGameObjects(tag);
+    }
+
+    /**
+     * Given a layer's name, finds the first gameObject with the given tag.
+     * @param tag the gameObject's tag.
+     * @param layerName the layer's name
+     * @return the first gameObject with the given tag or null if neither the gameObject or the layer exists.
+     */
+    public GameObject findGameObject(String tag, String layerName) {
+        return findGameObject(tag, findLayer(layerName));
+    }
+
+    /**
+     * Given a layer's name, finds all gameObjects with the given tag.
+     * @param tag the gameObject's tag.
+     * @param layerName the layer's name
+     * @return all gameObjects with the given tag or an empty array if neither the gameObject or the layer exists.
+     */
+    public Array<GameObject> findGameObjects(String tag, String layerName) {
+        return findGameObjects(tag, findLayer(layerName));
+    }
+
+    /**
      * Sets the background color of this scene if it uses a {@link GameCamera2d}
      * @param color the background color
      */
     public void setBackgroundColor(Color color) {
-        if (mainCamera instanceof GameCamera2d)
-            ((GameCamera2d)mainCamera).setBackgroundColor(color);
+        GameCamera camera = getMainCamera();
+        
+        if (camera instanceof GameCamera2d)
+            ((GameCamera2d)camera).setBackgroundColor(color);
     }
 
     private void updateComponents(Array<GameObject> gameObjects, final float deltaTime) {
         this.deltaTime = deltaTime;
+
+        for (GameObject go : gameObjects) {
+            go.__forEachComponent(preUpdateIter);
+        }
+
         for (GameObject go : gameObjects) {
             go.__forEachComponent(updateIter);
+        }
+
+        for (GameObject go : gameObjects) {
+            go.__forEachComponent(postUpdateIter);
         }
     }
 
@@ -520,8 +607,6 @@ public class Scene {
     public void __resize(int width, int height) {
         this.resizedWidth = width;
         this.resizedHeight = height;
-
-        mainCamera.__resize(width, height);
 
         Array<GameObject> gameObjects = getGameObjects();
 
@@ -574,10 +659,6 @@ public class Scene {
 
         updateComponents(gameObjects, deltaTime);
 
-        for (GameObject go : gameObjects) {
-            go.__forEachComponent(lateUpdateIter);
-        }
-
         animationCanvas.act(deltaTime);
         canvas.act(deltaTime);
     }
@@ -587,53 +668,59 @@ public class Scene {
      * <strong>DO NOT CALL THIS METHOD!</strong>
      */
     public void __render() {
-        Array<GameObject> gameObjects = getGameObjects();
+        getGameObjects();
 
-        if (mainCamera instanceof GameCamera2d) {
-            GameCamera2d gc2d = (GameCamera2d)mainCamera;
-            SpriteBatch batch = gc2d.getSpriteBatch();
-
-            Color bg = gc2d.getBackgroundColor();
-
-            Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-            gc2d.getCamera().update();
-            batch.setProjectionMatrix(gc2d.getCamera().combined);
-            batch.begin();
-            for (GameObject go : gameObjects) {
-                go.__forEachComponent(renderIter);
-            }
-            batch.end();
-        }
+        // Render
+        render();
 
         // Render debug drawings
-        if (renderCustomDebugLines) {
-            shapeRenderer.setProjectionMatrix(mainCamera.getCamera().combined);
+        if (renderCustomDebugLines)
+            renderDebugDrawings();
 
-            // Line
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for (GameObject go : gameObjects) {
-                go.__forEachComponent(debugLineIter);
-            }
-            shapeRenderer.end();
+        // Draw the UI
+        canvas.draw();
+    }
 
-            // Filled
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            for (GameObject go : gameObjects) {
-                go.__forEachComponent(debugFilledIter);
-            }
-            shapeRenderer.end();
-
-            // Point
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Point);
-            for (GameObject go : gameObjects) {
-                go.__forEachComponent(debugPointIter);
-            }
-            shapeRenderer.end();
+    protected void render() {
+        // Before Render
+        for (GameObject go : gameObjects) {
+            go.__forEachComponent(preRenderIter);
         }
 
-        canvas.draw();
+        // Render
+        for (GameObject go : gameObjects) {
+            go.__forEachComponent(renderIter);
+        }
+
+        // After Render
+        for (GameObject go : gameObjects) {
+            go.__forEachComponent(postRenderIter);
+        }
+    }
+
+    protected void renderDebugDrawings() {
+        shapeRenderer.setProjectionMatrix(getMainCamera().getCamera().combined);
+
+        // Line
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for (GameObject go : gameObjects) {
+            go.__forEachComponent(debugLineIter);
+        }
+        shapeRenderer.end();
+
+        // Filled
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        for (GameObject go : gameObjects) {
+            go.__forEachComponent(debugFilledIter);
+        }
+        shapeRenderer.end();
+
+        // Point
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Point);
+        for (GameObject go : gameObjects) {
+            go.__forEachComponent(debugPointIter);
+        }
+        shapeRenderer.end();
     }
 
     /**
@@ -647,7 +734,6 @@ public class Scene {
             go.__forEachComponent(destroyIter);
         }
 
-        mainCamera.__dispose();
         canvas.dispose();
     }
 
@@ -677,13 +763,13 @@ public class Scene {
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param tag a tag for the game object.
      * @param sprite a {@link TextureRegion} to render
-     * @param gameUnits a {@link GameUnits} instance used for converting the sprite's pixel dimensions to world units
+     * @param gameWorldUnits a {@link GameWorldUnits} instance used for converting the sprite's pixel dimensions to world units
      * @return the created game object
      */
     public GameObject newSpriteObject(String tag, TextureRegion sprite,
-                                      GameUnits gameUnits) {
+                                      GameWorldUnits gameWorldUnits) {
         GameObject go = GameObject.newInstance(tag);
-        SpriteRenderer sr = new SpriteRenderer(sprite, gameUnits);
+        SpriteRenderer sr = new SpriteRenderer(sprite, gameWorldUnits);
         go.addComponent(sr);
 
         return go;
@@ -691,28 +777,28 @@ public class Scene {
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
-     * The {@link GameUnits} instance of the current main camera will be used for unit conversions.
+     * The current {@link GameWorldUnits} instance will be used for unit conversions.
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param tag a tag for the game object.
      * @param sprite a {@link TextureRegion} to render
      * @return the created game object
      */
     public GameObject newSpriteObject(String tag, TextureRegion sprite)
-    { return newSpriteObject(tag, sprite, mainCamera.getWorldUnits()); }
+    { return newSpriteObject(tag, sprite, gameWorldUnits); }
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param sprite a {@link TextureRegion} to render
-     * @param gameUnits a {@link GameUnits} instance used for converting the sprite's pixel dimensions to world units
+     * @param gameWorldUnits a {@link GameWorldUnits} instance used for converting the sprite's pixel dimensions to world units
      * @return the created game object
      */
-    public GameObject newSpriteObject(TextureRegion sprite, GameUnits gameUnits)
-    { return newSpriteObject("Untagged", sprite, gameUnits); }
+    public GameObject newSpriteObject(TextureRegion sprite, GameWorldUnits gameWorldUnits)
+    { return newSpriteObject("Untagged", sprite, gameWorldUnits); }
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
-     * The {@link GameUnits} instance of the current main camera will be used for unit conversions.
+     * The current {@link GameWorldUnits} instance will be used for unit conversions.
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param sprite a {@link TextureRegion} to render
      * @return the created game object
@@ -725,26 +811,26 @@ public class Scene {
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param tag a tag for the game object.
      * @param sprite a {@link Texture} to render. <strong>The entire texture will be rendered!</strong>
-     * @param gameUnits a {@link GameUnits} instance used for converting the sprite's pixel dimensions to world units
+     * @param gameWorldUnits a {@link GameWorldUnits} instance used for converting the sprite's pixel dimensions to world units
      * @return the created game object
      */
-    public GameObject newSpriteObject(String tag, Texture sprite, GameUnits gameUnits)
-    { return newSpriteObject(tag, new TextureRegion(sprite), gameUnits); }
+    public GameObject newSpriteObject(String tag, Texture sprite, GameWorldUnits gameWorldUnits)
+    { return newSpriteObject(tag, new TextureRegion(sprite), gameWorldUnits); }
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
-     * The {@link GameUnits} instance of the current main camera will be used for unit conversions.
+     * The current {@link GameWorldUnits} instance will be used for unit conversions.
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param tag a tag for the game object.
      * @param sprite a {@link Texture} to render. <strong>The entire texture will be rendered!</strong>
      * @return the created game object
      */
     public GameObject newSpriteObject(String tag, Texture sprite)
-    { return newSpriteObject(tag, sprite, mainCamera.getWorldUnits()); }
+    { return newSpriteObject(tag, sprite, gameWorldUnits); }
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
-     * The {@link GameUnits} instance of the current main camera will be used for unit conversions.
+     * The current {@link GameWorldUnits} instance will be used for unit conversions.
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param sprite a {@link Texture} to render. <strong>The entire texture will be rendered!</strong>
      * @return the created game object
@@ -757,13 +843,13 @@ public class Scene {
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param tag a tag for the game object.
      * @param sprite a {@link TextureRegion} to render
-     * @param gameUnits a {@link GameUnits} instance used for converting the sprite's pixel dimensions to world units
+     * @param gameWorldUnits a {@link GameWorldUnits} instance used for converting the sprite's pixel dimensions to world units
      * @return the created game object
      */
     public ActorGameObject newActorSpriteObject(String tag, TextureRegion sprite,
-                                      GameUnits gameUnits) {
+                                      GameWorldUnits gameWorldUnits) {
         ActorGameObject go = ActorGameObject.newInstance(tag);
-        SpriteRenderer sr = new SpriteRenderer(sprite, gameUnits);
+        SpriteRenderer sr = new SpriteRenderer(sprite, gameWorldUnits);
         go.addComponent(sr);
 
         return go;
@@ -771,28 +857,28 @@ public class Scene {
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
-     * The {@link GameUnits} instance of the current main camera will be used for unit conversions.
+     * The current {@link GameWorldUnits} instance will be used for unit conversions.
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param tag a tag for the game object.
      * @param sprite a {@link TextureRegion} to render
      * @return the created game object
      */
     public ActorGameObject newActorSpriteObject(String tag, TextureRegion sprite)
-    { return newActorSpriteObject(tag, sprite, mainCamera.getWorldUnits()); }
+    { return newActorSpriteObject(tag, sprite, gameWorldUnits); }
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param sprite a {@link TextureRegion} to render
-     * @param gameUnits a {@link GameUnits} instance used for converting the sprite's pixel dimensions to world units
+     * @param gameWorldUnits a {@link GameWorldUnits} instance used for converting the sprite's pixel dimensions to world units
      * @return the created game object
      */
-    public ActorGameObject newActorSpriteObject(TextureRegion sprite, GameUnits gameUnits)
-    { return newActorSpriteObject("Untagged", sprite, gameUnits); }
+    public ActorGameObject newActorSpriteObject(TextureRegion sprite, GameWorldUnits gameWorldUnits)
+    { return newActorSpriteObject("Untagged", sprite, gameWorldUnits); }
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
-     * The {@link GameUnits} instance of the current main camera will be used for unit conversions.
+     * The current {@link GameWorldUnits} instance will be used for unit conversions.
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param sprite a {@link TextureRegion} to render
      * @return the created game object
@@ -805,26 +891,26 @@ public class Scene {
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param tag a tag for the game object.
      * @param sprite a {@link Texture} to render. <strong>The entire texture will be rendered!</strong>
-     * @param gameUnits a {@link GameUnits} instance used for converting the sprite's pixel dimensions to world units
+     * @param gameWorldUnits a {@link GameWorldUnits} instance used for converting the sprite's pixel dimensions to world units
      * @return the created game object
      */
-    public ActorGameObject newActorSpriteObject(String tag, Texture sprite, GameUnits gameUnits)
-    { return newActorSpriteObject(tag, new TextureRegion(sprite), gameUnits); }
+    public ActorGameObject newActorSpriteObject(String tag, Texture sprite, GameWorldUnits gameWorldUnits)
+    { return newActorSpriteObject(tag, new TextureRegion(sprite), gameWorldUnits); }
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
-     * The {@link GameUnits} instance of the current main camera will be used for unit conversions.
+     * The current {@link GameWorldUnits} instance will be used for unit conversions.
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param tag a tag for the game object.
      * @param sprite a {@link Texture} to render. <strong>The entire texture will be rendered!</strong>
      * @return the created game object
      */
     public ActorGameObject newActorSpriteObject(String tag, Texture sprite)
-    { return newActorSpriteObject(tag, sprite, mainCamera.getWorldUnits()); }
+    { return newActorSpriteObject(tag, sprite, gameWorldUnits); }
 
     /**
      * A convenient method for quickly creating a game object that renders a sprite ({@link TextureRegion}).
-     * The {@link GameUnits} instance of the current main camera will be used for unit conversions.
+     * The current {@link GameWorldUnits} instance will be used for unit conversions.
      * <strong>The returned game object is not added to the scene; you have to add it yourself!</strong>
      * @param sprite a {@link Texture} to render. <strong>The entire texture will be rendered!</strong>
      * @return the created game object

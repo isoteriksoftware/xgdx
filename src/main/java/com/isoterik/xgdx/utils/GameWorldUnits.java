@@ -9,7 +9,7 @@ import com.isoterik.xgdx.Transform;
  *
  * @author isoteriksoftware
  */
-public class GameUnits {
+public class GameWorldUnits {
     private final float unit;
     private final float ppu;
     private final float worldWidth;
@@ -21,8 +21,8 @@ public class GameUnits {
      * @param pixelsHeight number of vertical pixels
      * @param pixelsPerUnit how many pixels make one world unit
      */
-    public GameUnits(float pixelsWidth, float pixelsHeight,
-                     float pixelsPerUnit) {
+    public GameWorldUnits(float pixelsWidth, float pixelsHeight,
+                          float pixelsPerUnit) {
         ppu = pixelsPerUnit;
 
         worldWidth = pixelsWidth/ ppu;

@@ -1,4 +1,4 @@
-package com.isoterik.xgdx.x2d.components;
+package com.isoterik.xgdx.x2d.components.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,39 +6,44 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.isoterik.xgdx.Component;
 import com.isoterik.xgdx.GameCamera;
+import com.isoterik.xgdx.GameObject;
 import com.isoterik.xgdx.x2d.GameCamera2d;
-import com.isoterik.xgdx.utils.GameUnits;
+import com.isoterik.xgdx.utils.GameWorldUnits;
 
 /**
- * {@link com.isoterik.xgdx.GameObject}s that needs to render sprites ({@link Texture} or {@link TextureRegion}) should attach this component.
+ * Renders sprites ({@link Texture} or {@link TextureRegion}) when attached to a gameObject.
+ * It uses the default mainCamera of the scene by default but this can be changed.
  *
  * @author isoteriksoftware
  */
 public class SpriteRenderer extends Component {
-    private TextureRegion sprite;
+    protected TextureRegion sprite;
 
-    private Color color;
+    protected Color color;
 
-    private boolean flipX, flipY;
-    private boolean cull;
-    private boolean visible;
+    protected boolean flipX, flipY;
+    protected boolean cull;
+    protected boolean visible;
 
-    private GameUnits gameUnits;
+    protected GameWorldUnits gameWorldUnits;
 
-    private Vector3 temp = new Vector3();
+    protected Vector3 temp = new Vector3();
+
+    protected GameCamera2d gameCamera;
 
     /**
-     * Creates a new instance given a sprite and {@link GameUnits} to use for converting the sprite dimension to world units.
+     * Creates a new instance given a sprite and {@link GameWorldUnits} to use for converting the sprite dimension to world units.
      * @param sprite an instance of {@link TextureRegion}
-     * @param gameUnits an instance of {@link GameUnits}
+     * @param gameWorldUnits an instance of {@link GameWorldUnits}
      */
-    public SpriteRenderer(TextureRegion sprite, GameUnits gameUnits) {
-        this.gameUnits = gameUnits;
+    public SpriteRenderer(TextureRegion sprite, GameWorldUnits gameWorldUnits) {
+        this.gameWorldUnits = gameWorldUnits;
 
         this.sprite = sprite;
-        this.color  = Color.WHITE;
+        this.color  = new Color(1f, 1f, 1f, 1f);
         flipX       = false;
         flipY       = false;
         cull        = true;
@@ -46,13 +51,29 @@ public class SpriteRenderer extends Component {
     }
 
     /**
-     * Creates a new instance given a {@link TextureRegion} and {@link GameUnits} to use for converting the sprite dimension to world units.
+     * Creates a new instance given a {@link TextureRegion} and {@link GameWorldUnits} to use for converting the sprite dimension to world units.
      * <strong>Note:</strong> the entire {@link Texture} will be used as the sprite. This constructor isn't useful if the {@link Texture} is a sprite sheet (atlas)
      * @param sprite an instance of {@link Texture}
-     * @param gameUnits an instance of {@link GameUnits}
+     * @param gameWorldUnits an instance of {@link GameWorldUnits}
      */
-    public SpriteRenderer(Texture sprite, GameUnits gameUnits)
-    { this(new TextureRegion(sprite), gameUnits); }
+    public SpriteRenderer(Texture sprite, GameWorldUnits gameWorldUnits)
+    { this(new TextureRegion(sprite), gameWorldUnits); }
+
+    /**
+     * Returns the current {@link GameCamera2d} used.
+     * @return the current {@link GameCamera2d} used.
+     */
+    public GameCamera2d getGameCamera() {
+        return gameCamera;
+    }
+
+    /**
+     * Sets the current {@link GameCamera2d} used.
+     * @param gameCamera the current {@link GameCamera2d}
+     */
+    public void setGameCamera(GameCamera2d gameCamera) {
+        this.gameCamera = gameCamera;
+    }
 
     /**
      * Changes the visibility of the sprite.
@@ -86,23 +107,23 @@ public class SpriteRenderer extends Component {
 
     /**
      * Sets the sprite ({@link TextureRegion}) for this renderer. The host game object will be resized to fit the dimensions of the sprite.
-     * The {@link GameUnits} given will be used for converting the sprite dimension to world units.
+     * The {@link GameWorldUnits} given will be used for converting the sprite dimension to world units.
      * @param sprite an instance of {@link TextureRegion}
-     * @param gameUnits an instance of {@link GameUnits}
+     * @param gameWorldUnits an instance of {@link GameWorldUnits}
      */
-    public void setSprite(TextureRegion sprite, GameUnits gameUnits) {
+    public void setSprite(TextureRegion sprite, GameWorldUnits gameWorldUnits) {
         this.sprite = sprite;
-        this.gameUnits = gameUnits;
+        this.gameWorldUnits = gameWorldUnits;
         setWorldSize();
     }
 
     /**
      * Sets the sprite ({@link TextureRegion}) for this renderer. The host game object will be resized to fit the dimensions of the sprite.
-     * The default {@link GameUnits} provided during construction will be used for converting the sprite dimension to world units.
+     * The default {@link GameWorldUnits} provided during construction will be used for converting the sprite dimension to world units.
      * @param sprite an instance of {@link TextureRegion}
      */
     public void setSprite(TextureRegion sprite)
-    { setSprite(sprite, gameUnits); }
+    { setSprite(sprite, gameWorldUnits); }
 
     /**
      *
@@ -176,7 +197,7 @@ public class SpriteRenderer extends Component {
         if (gameObject == null)
             return;
 
-        Vector2 worldSize = gameUnits.toWorldUnit(sprite);
+        Vector2 worldSize = gameWorldUnits.toWorldUnit(sprite);
         gameObject.transform.size.set(worldSize, 0);
         gameObject.transform.origin.set(worldSize.x * .5f,
                 worldSize.y * .5f, 0);
@@ -193,10 +214,19 @@ public class SpriteRenderer extends Component {
     }
 
     @Override
-    public void render(GameCamera gameCamera) {
+    public void render(Array<GameObject> gameObjects) {
         // Render only if visible
         if (!visible)
             return;
+
+        // Use the default mainCamera if none is provided
+        if (gameCamera == null) {
+            GameCamera camera = scene.getMainCamera().getComponent(GameCamera.class);
+            if (!(camera instanceof GameCamera2d))
+                return;
+
+            gameCamera = (GameCamera2d) camera;
+        }
 
         // If culling, the sprite should be rendered only if it can be seen by the camera
         if (cull) {
@@ -211,14 +241,10 @@ public class SpriteRenderer extends Component {
 
     /**
      * Renders the sprite to the screen.
-     * @param gameCamera the camera used by the scene where the host game object resides
+     * @param gameCamera the camera to use.
      */
-    protected void drawSprite(GameCamera gameCamera) {
-        // The game camera must be a GameCamera2d instance
-        if (!(gameCamera instanceof GameCamera2d))
-            return;
-
-        SpriteBatch batch = ((GameCamera2d)gameCamera).getSpriteBatch();
+    protected void drawSprite(GameCamera2d gameCamera) {
+        SpriteBatch batch = gameCamera.getSpriteBatch();
         batch.setColor(color);
 
         Vector3 pos    = temp.set(gameObject.transform.position);

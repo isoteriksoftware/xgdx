@@ -11,7 +11,7 @@ import com.isoterik.xgdx.GameCamera;
  *
  * @author isoteriksoftware
  */
-public class XDebugRenderer extends DebugRendererBase {
+public class XDebugRenderer extends BaseDebugRenderer {
 	protected float size = .1f;
 
 	/**
@@ -58,7 +58,7 @@ public class XDebugRenderer extends DebugRendererBase {
 	}
 
 	@Override
-	public void draw(ShapeRenderer shapeRenderer, GameCamera gameCamera) {
+	public void draw(ShapeRenderer shapeRenderer) {
 		Vector3 pos = gameObject.transform.position;
 		
 		shapeRenderer.x(pos.x, pos.y, size);

@@ -11,7 +11,7 @@ import com.isoterik.xgdx.GameCamera;
  *
  * @author isoteriksoftware
  */
-public class BoxDebugRenderer extends DebugRendererBase {
+public class BoxDebugRenderer extends BaseDebugRenderer {
 	/**
 	 * Creates a new instance given a shape type and a color
 	 * @param shapeType the shape type
@@ -46,7 +46,7 @@ public class BoxDebugRenderer extends DebugRendererBase {
 	}
 	
 	@Override
-	public void draw(ShapeRenderer shapeRenderer, GameCamera gameCamera) {
+	public void draw(ShapeRenderer shapeRenderer) {
 		Vector3 pos = gameObject.transform.position;
 		Vector3 size = gameObject.transform.size;
 		Vector3 origin = gameObject.transform.origin;

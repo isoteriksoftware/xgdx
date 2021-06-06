@@ -70,18 +70,21 @@ public class Component {
 
     /**
      * Called before other component renders.
+     * @param gameObjects the list of current gameObjects in the scene
      */
-    public void preRender() {}
+    public void preRender(Array<GameObject> gameObjects) {}
 
     /**
      * Called when the component should render.
+     * @param gameObjects the list of current gameObjects in the scene
      */
-    public void render() {}
+    public void render(Array<GameObject> gameObjects) {}
 
     /**
      * Called after other component renders.
+     * @param gameObjects the list of current gameObjects in the scene
      */
-    public void postRender() {}
+    public void postRender(Array<GameObject> gameObjects) {}
 
     /**
      * Called when the component should render debug drawings of type {@link com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType#Line}

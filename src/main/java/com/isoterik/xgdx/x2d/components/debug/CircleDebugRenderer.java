@@ -11,7 +11,7 @@ import com.isoterik.xgdx.GameCamera;
  *
  * @author isoteriksoftware
  */
-public class CircleDebugRenderer extends DebugRendererBase {
+public class CircleDebugRenderer extends BaseDebugRenderer {
 	protected int segments = 30;
 
 	/**
@@ -65,7 +65,7 @@ public class CircleDebugRenderer extends DebugRendererBase {
 	}
 
 	@Override
-	public void draw(ShapeRenderer shapeRenderer, GameCamera gameCamera) {
+	public void draw(ShapeRenderer shapeRenderer) {
 		Vector3 pos = gameObject.transform.position;
 		Vector3 size = gameObject.transform.size;
 

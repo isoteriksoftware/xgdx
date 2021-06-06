@@ -1,10 +1,5 @@
-package com.isoterik.xgdx.x2d.scenes;
+package com.isoterik.xgdx.x2d.components.renderer;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
@@ -20,18 +15,18 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.utils.Array;
+import com.isoterik.xgdx.Component;
 import com.isoterik.xgdx.GameObject;
-import com.isoterik.xgdx.Scene;
 import com.isoterik.xgdx.x2d.GameCamera2d;
 
 import java.util.Iterator;
 
 /**
- * A scene that is capable of rendering a {@link TiledMap}. It uses {@link OrthoCachedTiledMapRenderer} for rendering by default but can be changed.
- *
+ * A component capable of rendering a {@link TiledMap}. It uses {@link OrthoCachedTiledMapRenderer} for rendering by default but can be changed.
+ * This component requires a {@link GameCamera2d} and will not render anything if none exists.
  * @author isoteriksoftware
  */
-public class TiledMapScene extends Scene {
+public class TiledMapRenderer extends Component {
     /** The dimension of the map. */
     public final int mapWidth, mapHeight;
 
@@ -50,9 +45,7 @@ public class TiledMapScene extends Scene {
      * @param tiledMap the tiled map
      * @param unitScale the unit scale
      */
-    public TiledMapScene(TiledMap tiledMap, float unitScale) {
-        super();
-
+    public TiledMapRenderer(TiledMap tiledMap, float unitScale) {
         this.tiledMap = tiledMap;
 
         tileWidth = (int)tiledMap.getProperties().get("tilewidth");
@@ -71,7 +64,7 @@ public class TiledMapScene extends Scene {
      * @param mapFileName the fileName of the map file
      * @param unitScale the unit scale.
      */
-    public TiledMapScene(String mapFileName, float unitScale)
+    public TiledMapRenderer(String mapFileName, float unitScale)
     { this(new TmxMapLoader().load(mapFileName), unitScale); }
 
     /**
@@ -85,58 +78,10 @@ public class TiledMapScene extends Scene {
     }
 
     @Override
-    public void __render() {
-        Array<GameObject> gameObjects = getGameObjects();
-
-        if (mainCamera != null && mainCamera instanceof GameCamera2d) {
-            GameCamera2d gc2d = (GameCamera2d)mainCamera;
-            SpriteBatch batch = gc2d.getSpriteBatch();
-
-            Color bg = gc2d.getBackgroundColor();
-
-            Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-            // Render the tiled map first
-            renderTiledMap(gc2d);
-
-            gc2d.getCamera().update();
-            batch.setProjectionMatrix(gc2d.getCamera().combined);
-            batch.begin();
-            for (GameObject go : gameObjects) {
-                go.__forEachComponent(renderIter);
-            }
-            batch.end();
-        }
-
-        // Render debug drawings
-        if (renderCustomDebugLines) {
-            assert mainCamera != null;
-            shapeRenderer.setProjectionMatrix(mainCamera.getCamera().combined);
-
-            // Line
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for (GameObject go : gameObjects) {
-                go.__forEachComponent(debugLineIter);
-            }
-            shapeRenderer.end();
-
-            // Filled
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            for (GameObject go : gameObjects) {
-                go.__forEachComponent(debugFilledIter);
-            }
-            shapeRenderer.end();
-
-            // Point
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Point);
-            for (GameObject go : gameObjects) {
-                go.__forEachComponent(debugPointIter);
-            }
-            shapeRenderer.end();
-        }
-
-        canvas.draw();
+    public void render(Array<GameObject> gameObjects) {
+        GameCamera2d gameCamera2d = getComponent(GameCamera2d.class);
+        if (gameCamera2d != null)
+            renderTiledMap(gameCamera2d);
     }
 
     /**

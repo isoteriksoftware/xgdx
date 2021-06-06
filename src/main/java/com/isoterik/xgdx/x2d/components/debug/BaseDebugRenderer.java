@@ -10,7 +10,7 @@ import com.isoterik.xgdx.GameCamera;
  *
  * @author isoteriksoftware
  */
-public abstract class DebugRendererBase extends Component {
+public abstract class BaseDebugRenderer extends Component {
 	public static final ShapeRenderer.ShapeType LINE_SHAPE
 		= ShapeRenderer.ShapeType.Line;
 	public static final ShapeRenderer.ShapeType FILLED_SHAPE
@@ -22,16 +22,16 @@ public abstract class DebugRendererBase extends Component {
 	
 	protected Color color;
 
-	public DebugRendererBase(ShapeRenderer.ShapeType shapeType, Color color) {
+	public BaseDebugRenderer(ShapeRenderer.ShapeType shapeType, Color color) {
 		this.shapeType = shapeType;
 		this.color = color;
 	}
 	
-	public DebugRendererBase(ShapeRenderer.ShapeType shapeType) {
+	public BaseDebugRenderer(ShapeRenderer.ShapeType shapeType) {
 		this(shapeType, Color.WHITE);
 	}
 	
-	public DebugRendererBase() {
+	public BaseDebugRenderer() {
 		this(LINE_SHAPE);
 	}
 
@@ -40,7 +40,7 @@ public abstract class DebugRendererBase extends Component {
 	 * @param color the color
 	 * @return this instance for chaining
 	 */
-	public DebugRendererBase setColor(Color color) {
+	public BaseDebugRenderer setColor(Color color) {
 		this.color = color;
 		return this;
 	}
@@ -57,7 +57,7 @@ public abstract class DebugRendererBase extends Component {
 	 * @param shapeType the shape type
 	 * @return this instance for chaining
 	 */
-	public DebugRendererBase setShapeType(ShapeRenderer.ShapeType shapeType) {
+	public BaseDebugRenderer setShapeType(ShapeRenderer.ShapeType shapeType) {
 		this.shapeType = shapeType;
 		return this;
 	}
@@ -70,26 +70,26 @@ public abstract class DebugRendererBase extends Component {
 	{ return shapeType; }
 
 	@Override
-	public void drawDebugLine(ShapeRenderer shapeRenderer, GameCamera gameCamera) {
+	public void drawDebugLine(ShapeRenderer shapeRenderer) {
 		if (shapeType == LINE_SHAPE) {
 			shapeRenderer.setColor(color);
-			draw(shapeRenderer, gameCamera);
+			draw(shapeRenderer);
 		}
 	}
 
 	@Override
-	public void drawDebugFilled(ShapeRenderer shapeRenderer, GameCamera gameCamera) {
+	public void drawDebugFilled(ShapeRenderer shapeRenderer) {
 		if (shapeType == FILLED_SHAPE) {
 			shapeRenderer.setColor(color);
-			draw(shapeRenderer, gameCamera);
+			draw(shapeRenderer);
 		}
 	}
 
 	@Override
-	public void drawDebugPoint(ShapeRenderer shapeRenderer, GameCamera gameCamera) {
+	public void drawDebugPoint(ShapeRenderer shapeRenderer) {
 		if (shapeType == POINT_SHAPE) {
 			shapeRenderer.setColor(color);
-			draw(shapeRenderer, gameCamera);
+			draw(shapeRenderer);
 		}
 	}
 
@@ -98,8 +98,6 @@ public abstract class DebugRendererBase extends Component {
 	 * <strong>Note:</strong> this method is only called for shape type supported by the subclass. This means a subclass can disallow change of shape type if it
 	 * only supports a particular type of shape
 	 * @param shapeRenderer a {@link ShapeRenderer} that can be used for rendering shapes
-	 * @param gameCamera the game camera provided by the scene where the host game object resides
 	 */
-	public abstract void draw(ShapeRenderer shapeRenderer,
-		GameCamera gameCamera);
+	public abstract void draw(ShapeRenderer shapeRenderer);
 }

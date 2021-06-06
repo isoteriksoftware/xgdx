@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.isoterik.xgdx.XGdx;
 import com.isoterik.xgdx.Scene;
 import com.isoterik.xgdx.x2d.scenes.transition.TransitionDirection;
-import com.isoterik.xgdx.utils.GameUnits;
+import com.isoterik.xgdx.utils.GameWorldUnits;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
@@ -41,8 +41,8 @@ public final class ActorAnimation {
 
         Scene currentScene = XGdx.instance().sceneManager.getCurrentScene();
         if (currentScene != null && currentScene.getMainCamera() != null) {
-            GameUnits gameUnits = currentScene.getMainCamera().getWorldUnits();
-            instance.setup(gameUnits.getScreenWidth(), gameUnits.getScreenHeight());
+            GameWorldUnits gameWorldUnits = currentScene.getGameUnits();
+            instance.setup(gameWorldUnits.getScreenWidth(), gameWorldUnits.getScreenHeight());
         }
 
         return(instance);
