@@ -40,7 +40,6 @@ public class InputManager extends InputAdapter implements GestureDetector.Gestur
 
 	/**
 	 * An array of supported mouse buttons.
-	 * @see Input.Buttons
 	 */
 	public static final int[] MOUSE_BUTTONS = {
 			Input.Buttons.BACK,
