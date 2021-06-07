@@ -22,8 +22,8 @@ public class Slide implements ISceneTransition {
     /**
      * Creates a new instance given a duration, direction, number of slices and an interpolation
      * @param duration the duration of the transition in seconds
-     * @param direction the direction of the transition. Must be one of {@link TransitionDirection#LEFT}, {@link TransitionDirection#RIGHT},
-     *                  {@link TransitionDirection#UP}, {@link TransitionDirection#DOWN}
+     * @param direction the direction of the transition. Must be one of {@link SceneTransitionDirection#LEFT}, {@link SceneTransitionDirection#RIGHT},
+     *                  {@link SceneTransitionDirection#UP}, {@link SceneTransitionDirection#DOWN}
      * @param slideOut if true, the current scene will slide out else the current scene will slide in. The slided out scene will be at the top
      * @param easing an interpolation to use.
      * @return the created instance
@@ -54,19 +54,19 @@ public class Slide implements ISceneTransition {
 
         // calculate position offset
         switch (direction) {
-            case TransitionDirection.LEFT:
+            case SceneTransitionDirection.LEFT:
                 x = -w * alpha;
                 if (!slideOut) x += w;
                 break;
-            case TransitionDirection.RIGHT:
+            case SceneTransitionDirection.RIGHT:
                 x = w * alpha;
                 if (!slideOut) x -= w;
                 break;
-            case TransitionDirection.UP:
+            case SceneTransitionDirection.UP:
                 y = h * alpha;
                 if (!slideOut) y -= h;
                 break;
-            case TransitionDirection.DOWN:
+            case SceneTransitionDirection.DOWN:
                 y = -h * alpha;
                 if (!slideOut) y += h;
                 break;

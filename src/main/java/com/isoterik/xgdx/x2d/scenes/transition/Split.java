@@ -22,8 +22,8 @@ public class Split implements ISceneTransition {
     /**
      * Creates a new instance given a duration, direction, number of slices and an interpolation
      * @param duration the duration of the transition in seconds
-     * @param direction the direction of the transition. Must be one of {@link TransitionDirection#LEFT_RIGHT}, {@link TransitionDirection#UP_DOWN},
-     *                  {@link TransitionDirection#LEFT_RIGHT_DIAGONAL}, {@link TransitionDirection#UP_DOWN_DIAGONAL}
+     * @param direction the direction of the transition. Must be one of {@link SceneTransitionDirection#LEFT_RIGHT}, {@link SceneTransitionDirection#UP_DOWN},
+     *                  {@link SceneTransitionDirection#LEFT_RIGHT_DIAGONAL}, {@link SceneTransitionDirection#UP_DOWN_DIAGONAL}
      * @param slideOut if true, the current scene will slide out else the current scene will slide in. The slided out scene will be at the top
      * @param easing an interpolation to use.
      * @return the created instance
@@ -57,7 +57,7 @@ public class Split implements ISceneTransition {
 
         // calculate position offset
         switch (direction) {
-            case TransitionDirection.LEFT_RIGHT:
+            case SceneTransitionDirection.LEFT_RIGHT:
                 x1 = -w/2 * alpha;
                 x2 =  (w/2 * alpha) + w/2;
                 if(!slideOut) {
@@ -65,7 +65,7 @@ public class Split implements ISceneTransition {
                     x2 = -w/2 * alpha;
                 }
                 break;
-            case TransitionDirection.UP_DOWN:
+            case SceneTransitionDirection.UP_DOWN:
                 y1 = -h/2 * alpha;
                 y2 = (h/2 * alpha) + h/2;
                 if(!slideOut) {
@@ -73,8 +73,8 @@ public class Split implements ISceneTransition {
                     y2 = -h/2 * alpha;
                 }
                 break;
-            case TransitionDirection.LEFT_RIGHT_DIAGONAL:
-            case TransitionDirection.UP_DOWN_DIAGONAL:
+            case SceneTransitionDirection.LEFT_RIGHT_DIAGONAL:
+            case SceneTransitionDirection.UP_DOWN_DIAGONAL:
                 x1 = -w/2 * alpha;
                 x2 =  (w/2 * alpha) + w/2;
                 if(!slideOut) {
@@ -103,8 +103,8 @@ public class Split implements ISceneTransition {
                 currScreen.getWidth(), currScreen.getHeight(),
                 false, true);
 
-        if(direction == TransitionDirection.LEFT_RIGHT
-                || direction == TransitionDirection.LEFT_RIGHT_DIAGONAL) {
+        if(direction == SceneTransitionDirection.LEFT_RIGHT
+                || direction == SceneTransitionDirection.LEFT_RIGHT_DIAGONAL) {
             //draw the first half
             batch.draw(texTop, x1, y1, 0, 0, w/2, h, 1, 1, 0, 0, 0,
                     currScreen.getWidth()/2, currScreen.getHeight(),

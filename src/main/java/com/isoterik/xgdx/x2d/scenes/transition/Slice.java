@@ -23,7 +23,7 @@ public class Slice implements ISceneTransition {
     /**
      * Creates a new instance given a duration, direction, number of slices and an interpolation
      * @param duration the duration of the transition in seconds
-     * @param direction the direction of the transition. Must be one of {@link TransitionDirection#UP}, {@link TransitionDirection#DOWN}, {@link TransitionDirection#UP_DOWN}
+     * @param direction the direction of the transition. Must be one of {@link SceneTransitionDirection#UP}, {@link SceneTransitionDirection#DOWN}, {@link SceneTransitionDirection#UP_DOWN}
      * @param numSlices the number of slices to generate
      * @param easing an interpolation to use.
      * @return the created instance
@@ -73,13 +73,13 @@ public class Slice implements ISceneTransition {
             // list of slice indices
             float offsetY = h * (1 + sliceIndex.get(i) / (float)sliceIndex.size);
             switch (direction) {
-                case TransitionDirection.UP:
+                case SceneTransitionDirection.UP:
                     y = -offsetY + offsetY * alpha;
                     break;
-                case TransitionDirection.DOWN:
+                case SceneTransitionDirection.DOWN:
                     y = offsetY - offsetY * alpha;
                     break;
-                case TransitionDirection.UP_DOWN:
+                case SceneTransitionDirection.UP_DOWN:
                     if (i % 2 == 0) {
                         y = -offsetY + offsetY * alpha;
                     } else {

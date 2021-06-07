@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.isoterik.xgdx.XGdx;
 import com.isoterik.xgdx.Scene;
-import com.isoterik.xgdx.x2d.scenes.transition.TransitionDirection;
+import com.isoterik.xgdx.x2d.scenes.transition.SceneTransitionDirection;
 import com.isoterik.xgdx.utils.GameWorldUnits;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -24,10 +24,10 @@ public final class ActorAnimation {
 
     private float screenWidth, screenHeight;
 
-    public static final int UP = TransitionDirection.UP;
-    public static final int DOWN = TransitionDirection.DOWN;
-    public static final int LEFT = TransitionDirection.LEFT;
-    public static final int RIGHT = TransitionDirection.RIGHT;
+    public static final int UP = SceneTransitionDirection.UP;
+    public static final int DOWN = SceneTransitionDirection.DOWN;
+    public static final int LEFT = SceneTransitionDirection.LEFT;
+    public static final int RIGHT = SceneTransitionDirection.RIGHT;
 
     private ActorAnimation(){}
 
