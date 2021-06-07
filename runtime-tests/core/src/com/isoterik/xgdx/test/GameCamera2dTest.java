@@ -3,13 +3,13 @@ package com.isoterik.xgdx.test;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import io.github.isoterik.xgdx.GameObject;
-import io.github.isoterik.xgdx.Scene;
-import io.github.isoterik.xgdx.asset.GameAssetsLoader;
-import io.github.isoterik.xgdx.input.KeyCodes;
-import io.github.isoterik.xgdx.input.KeyTrigger;
-import io.github.isoterik.xgdx.x2d.GameCamera2d;
-import io.github.isoterik.xgdx.x2d.components.renderer.TiledMapRenderer;
+import io.github.isoteriktech.xgdx.GameObject;
+import io.github.isoteriktech.xgdx.Scene;
+import io.github.isoteriktech.xgdx.asset.GameAssetsLoader;
+import io.github.isoteriktech.xgdx.input.KeyCodes;
+import io.github.isoteriktech.xgdx.input.KeyTrigger;
+import io.github.isoteriktech.xgdx.x2d.GameCamera2d;
+import io.github.isoteriktech.xgdx.x2d.components.renderer.TiledMapRenderer;
 
 public class GameCamera2dTest extends Scene {
     private TiledMapRenderer tiledMapRenderer;

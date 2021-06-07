@@ -1,9 +1,9 @@
 package com.isoterik.xgdx.test;
 
 import com.badlogic.gdx.graphics.Texture;
-import io.github.isoterik.xgdx.GameObject;
-import io.github.isoterik.xgdx.Scene;
-import io.github.isoterik.xgdx.asset.GameAssetsLoader;
+import io.github.isoteriktech.xgdx.GameObject;
+import io.github.isoteriktech.xgdx.Scene;
+import io.github.isoteriktech.xgdx.asset.GameAssetsLoader;
 
 public class SpriteRenderingTest extends Scene {
     public SpriteRenderingTest() {

@@ -2,12 +2,12 @@ package com.isoterik.xgdx.test;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import io.github.isoterik.xgdx.GameObject;
-import io.github.isoterik.xgdx.Scene;
-import io.github.isoterik.xgdx.x2d.components.debug.BoxDebugRenderer;
-import io.github.isoterik.xgdx.x2d.components.debug.CircleDebugRenderer;
-import io.github.isoterik.xgdx.x2d.components.debug.EllipseDebugRenderer;
-import io.github.isoterik.xgdx.x2d.components.debug.XDebugRenderer;
+import io.github.isoteriktech.xgdx.GameObject;
+import io.github.isoteriktech.xgdx.Scene;
+import io.github.isoteriktech.xgdx.x2d.components.debug.BoxDebugRenderer;
+import io.github.isoteriktech.xgdx.x2d.components.debug.CircleDebugRenderer;
+import io.github.isoteriktech.xgdx.x2d.components.debug.EllipseDebugRenderer;
+import io.github.isoteriktech.xgdx.x2d.components.debug.XDebugRenderer;
 
 public class DebugRendererTest extends Scene {
     public DebugRendererTest() {
