@@ -20,6 +20,6 @@ public class DebugRendererTest extends Scene {
         box.addComponent(new CircleDebugRenderer().setColor(Color.YELLOW));
         box.addComponent(new EllipseDebugRenderer().setColor(Color.BLUE));
         box.transform.setSize(2, 3);
-        box.transform.setPosition(5, 3);
+        box.transform.setPosition(0, 3);
     }
 }

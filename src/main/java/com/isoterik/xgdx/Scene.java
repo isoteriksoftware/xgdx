@@ -1,6 +1,7 @@
 package com.isoterik.xgdx;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -87,6 +88,9 @@ public class Scene {
 
         onConstruction();
 
+        gameWorldUnits = new GameWorldUnits(xGdx.defaultSettings.VIEWPORT_WIDTH, xGdx.defaultSettings.VIEWPORT_HEIGHT,
+                xGdx.defaultSettings.PIXELS_PER_UNIT);
+
         defaultLayer = new Layer(DEFAULT_LAYER);
         layers = new Array<>();
         layers.add(defaultLayer);
@@ -164,9 +168,7 @@ public class Scene {
         mainCameraObject = GameObject.newInstance("MainCamera");
         mainCameraObject.addComponent(camera);
         addGameObject(mainCameraObject);
-
-        gameWorldUnits = new GameWorldUnits(xGdx.defaultSettings.VIEWPORT_WIDTH, xGdx.defaultSettings.VIEWPORT_HEIGHT,
-                xGdx.defaultSettings.PIXELS_PER_UNIT);
+        System.out.println(camera.getViewport().getWorldWidth());
 
         setupCanvas(new StretchViewport(gameWorldUnits.getScreenWidth(),
                 gameWorldUnits.getScreenHeight()));

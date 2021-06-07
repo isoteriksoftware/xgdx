@@ -74,9 +74,4 @@ public class GameCamera extends Component {
     public void resize(int newScreenWidth, int newScreenHeight) {
         viewport.update(newScreenWidth, newScreenHeight, true);
     }
-
-    @Override
-    public void update(float deltaTime) {
-        camera.update();
-    }
 }

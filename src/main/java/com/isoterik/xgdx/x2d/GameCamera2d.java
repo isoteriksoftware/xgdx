@@ -32,10 +32,11 @@ public class GameCamera2d extends GameCamera {
         spriteBatch = new SpriteBatch();
         this.backgroundColor = new Color(1, 0, 0, 1);
 
-        if (camera == null || !(camera instanceof  OrthographicCamera))
+        if (camera == null || !(camera instanceof  OrthographicCamera)) {
             camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
+            getCamera().setToOrtho(false, viewport.getWorldWidth(), viewport.getWorldHeight());
+        }
 
-        getCamera().position.set(viewport.getWorldWidth() * .5f, viewport.getWorldHeight() * .5f, 0);
         viewport.setCamera(camera);
     }
 
@@ -93,7 +94,7 @@ public class GameCamera2d extends GameCamera {
     public void setup(Viewport viewport) {
         super.setup(viewport);
         camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
-        camera.position.set(viewport.getWorldWidth() * .5f, viewport.getWorldHeight() * .5f, 0);
+        camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0);
         viewport.setCamera(camera);
     }
 
