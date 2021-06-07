@@ -3,7 +3,7 @@ apply plugin: 'signing'
 
 task xgdxSoourcesJar(type: Jar) {
     archiveClassifier.set('sources')
-    from sourceSets.main.java
+    from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar) {
@@ -12,8 +12,7 @@ task javadocJar(type: Jar) {
 }
 
 artifacts {
-    archives xgdxSoourcesJar
-    archives javadocJar
+    archives javadocJar, xgdxSoourcesJar
 }
 
 afterEvaluate {
