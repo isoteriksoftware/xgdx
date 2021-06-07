@@ -94,7 +94,7 @@ public class GameCamera2d extends GameCamera {
     public void setup(Viewport viewport) {
         super.setup(viewport);
         camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
-        camera.position.set(camera.viewportWidth * .5f, camera.viewportHeight * .5f, 0);
+        getCamera().setToOrtho(false, viewport.getWorldWidth(), viewport.getWorldHeight());
         viewport.setCamera(camera);
     }
 
