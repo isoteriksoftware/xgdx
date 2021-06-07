@@ -1,8 +1,8 @@
 package com.isoterik.xgdx.test;
 
-import com.isoterik.xgdx.Scene;
-import com.isoterik.xgdx.XGdxGame;
-import com.isoterik.xgdx.x2d.scenes.transition.SceneTransitions;
+import io.github.isoterik.xgdx.Scene;
+import io.github.isoterik.xgdx.XGdxGame;
+import io.github.isoterik.xgdx.x2d.scenes.transition.SceneTransitions;
 
 public class XGDXTest extends XGdxGame {
 	@Override

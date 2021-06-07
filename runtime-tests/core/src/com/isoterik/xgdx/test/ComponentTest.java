@@ -2,9 +2,9 @@ package com.isoterik.xgdx.test;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
-import com.isoterik.xgdx.Component;
-import com.isoterik.xgdx.GameObject;
-import com.isoterik.xgdx.Scene;
+import io.github.isoterik.xgdx.Component;
+import io.github.isoterik.xgdx.GameObject;
+import io.github.isoterik.xgdx.Scene;
 
 public class ComponentTest extends Scene {
     public ComponentTest() {

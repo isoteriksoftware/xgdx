@@ -3,9 +3,9 @@ package com.isoterik.xgdx.test;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.isoterik.xgdx.ActorGameObject;
-import com.isoterik.xgdx.Scene;
-import com.isoterik.xgdx.asset.GameAssetsLoader;
+import io.github.isoterik.xgdx.ActorGameObject;
+import io.github.isoterik.xgdx.Scene;
+import io.github.isoterik.xgdx.asset.GameAssetsLoader;
 
 public class ActorGameObjectTest extends Scene {
     public ActorGameObjectTest() {

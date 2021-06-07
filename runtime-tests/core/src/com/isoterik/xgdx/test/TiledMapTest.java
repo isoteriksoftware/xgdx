@@ -2,10 +2,10 @@ package com.isoterik.xgdx.test;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.isoterik.xgdx.GameObject;
-import com.isoterik.xgdx.Scene;
-import com.isoterik.xgdx.asset.GameAssetsLoader;
-import com.isoterik.xgdx.x2d.components.renderer.TiledMapRenderer;
+import io.github.isoterik.xgdx.GameObject;
+import io.github.isoterik.xgdx.Scene;
+import io.github.isoterik.xgdx.asset.GameAssetsLoader;
+import io.github.isoterik.xgdx.x2d.components.renderer.TiledMapRenderer;
 
 public class TiledMapTest extends Scene {
     private TiledMapRenderer tiledMapRenderer;
