@@ -168,7 +168,6 @@ public class Scene {
         mainCameraObject = GameObject.newInstance("MainCamera");
         mainCameraObject.addComponent(camera);
         addGameObject(mainCameraObject);
-        System.out.println(camera.getViewport().getWorldWidth());
 
         setupCanvas(new StretchViewport(gameWorldUnits.getScreenWidth(),
                 gameWorldUnits.getScreenHeight()));

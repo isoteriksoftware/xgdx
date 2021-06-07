@@ -198,8 +198,8 @@ public class SpriteRenderer extends Component {
             return;
 
         Vector2 worldSize = gameWorldUnits.toWorldUnit(sprite);
-        gameObject.transform.size.set(worldSize, 0);
-        gameObject.transform.origin.set(worldSize.x * .5f,
+        gameObject.transform.setSize(worldSize.x, worldSize.y);
+        gameObject.transform.setOrigin(worldSize.x * .5f,
                 worldSize.y * .5f, 0);
     }
 

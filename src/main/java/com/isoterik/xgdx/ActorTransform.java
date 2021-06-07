@@ -3,6 +3,7 @@ package com.isoterik.xgdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class ActorTransform extends Transform {
+    /** A reference to the {@link Actor} instance for this transform. */
     public final Actor actor;
 
     public ActorTransform() {
@@ -114,6 +115,10 @@ public class ActorTransform extends Transform {
         return actor.getY();
     }
 
+    /**
+     * Returns the {@link Actor} instance for this transform.
+     * @return the {@link Actor} instance for this transform.
+     */
     public Actor getActor() {
         return actor;
     }
