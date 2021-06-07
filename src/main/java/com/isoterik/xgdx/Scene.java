@@ -703,17 +703,17 @@ public class Scene {
     protected void renderDebugDrawings() {
         shapeRenderer.setProjectionMatrix(getMainCamera().getCamera().combined);
 
-        // Line
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for (GameObject go : gameObjects) {
-            go.__forEachComponent(debugLineIter);
-        }
-        shapeRenderer.end();
-
         // Filled
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (GameObject go : gameObjects) {
             go.__forEachComponent(debugFilledIter);
+        }
+        shapeRenderer.end();
+
+        // Line
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for (GameObject go : gameObjects) {
+            go.__forEachComponent(debugLineIter);
         }
         shapeRenderer.end();
 
