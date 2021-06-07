@@ -1,7 +1,6 @@
 package com.isoterik.xgdx;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -47,7 +46,7 @@ public class Scene {
     protected GameWorldUnits gameWorldUnits;
 
     /** The input manager for handling input. */
-    protected final InputManager inputManager;
+    protected final InputManager input;
 
     /* For components iteration that needs the current delta time */
     private float deltaTime;
@@ -95,7 +94,7 @@ public class Scene {
         layers = new Array<>();
         layers.add(defaultLayer);
 
-        inputManager = new InputManager(this);
+        input = new InputManager(this);
 
         startIter = component -> {
             if (component.isEnabled())
@@ -248,10 +247,10 @@ public class Scene {
      */
     public void setupCanvas(Viewport viewport) {
         if (canvas != null)
-            inputManager.getInputMultiplexer().removeProcessor(canvas);
+            input.getInputMultiplexer().removeProcessor(canvas);
 
         canvas = new Stage(viewport);
-        inputManager.getInputMultiplexer().addProcessor(canvas);
+        input.getInputMultiplexer().addProcessor(canvas);
     }
 
     /**
@@ -281,8 +280,8 @@ public class Scene {
      *
      * @return the input manager for this scene
      */
-    public InputManager getInputManager()
-    { return inputManager; }
+    public InputManager getInput()
+    { return input; }
 
     /**
      * Changes the camera used for projecting this scene. This only changes the attached {@link GameCamera} and not the gameObject itself
@@ -654,7 +653,7 @@ public class Scene {
     public void __update(final float deltaTime) {
         this.deltaTime = deltaTime;
 
-        inputManager.__update();
+        input.__update();
 
         Array<GameObject> gameObjects = getGameObjects();
 

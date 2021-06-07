@@ -174,7 +174,7 @@ public class Component {
         this.scene = scene;
 
         if (scene != null)
-            this.input = scene.getInputManager();
+            this.input = scene.getInput();
         else
             this.input = null;
     }

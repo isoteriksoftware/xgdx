@@ -126,7 +126,7 @@ public final class SceneManager {
                 nextScene.__resume();
 
                 // enable input for next screen
-                Gdx.input.setInputProcessor(nextScene.getInputManager().getInputMultiplexer());
+                Gdx.input.setInputProcessor(nextScene.getInput().getInputMultiplexer());
 
                 //notify the scenes of
                 //transition completion
@@ -192,7 +192,7 @@ public final class SceneManager {
     public void __resume() {
         if (currScene != null) {
             currScene.__resume();
-            Gdx.input.setInputProcessor(currScene.getInputManager().getInputMultiplexer());
+            Gdx.input.setInputProcessor(currScene.getInput().getInputMultiplexer());
         }
     }
 
