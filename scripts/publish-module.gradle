@@ -1,7 +1,7 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-task xgdxSoourcesJar(type: Jar) {
+task xgdxSourcesJar(type: Jar) {
     archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
@@ -12,7 +12,7 @@ task javadocJar(type: Jar) {
 }
 
 artifacts {
-    archives javadocJar, xgdxSoourcesJar
+    archives javadocJar, xgdxSourcesJar
 }
 
 afterEvaluate {
@@ -26,7 +26,7 @@ afterEvaluate {
 
                 from components.java
 
-                artifact xgdxSoourcesJar
+                artifact xgdxSourcesJar
                 artifact javadocJar
 
                 pom {
