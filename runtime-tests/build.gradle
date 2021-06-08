@@ -108,7 +108,7 @@ project(":html") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion:sources"
         api "com.badlogicgames.gdx:gdx-box2d-gwt:$gdxVersion:sources"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion:sources"
-        
+        api "io.github.isoteriktech:xgdx:1.0.1-SNAPSHOT:sources"
     }
 }
 
@@ -121,6 +121,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
 
-        api "com.isoterik.xgdx:xgdx:1.0.0-SNAPSHOT"
+        api "io.github.isoteriktech:xgdx:1.0.1-SNAPSHOT"
     }
 }

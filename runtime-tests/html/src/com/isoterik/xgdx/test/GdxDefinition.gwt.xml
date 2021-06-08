@@ -4,6 +4,7 @@
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 	<inherits name='com.badlogic.gdx.physics.box2d.box2d-gwt' />
 	<inherits name='com.badlogic.gdx.ai' />
+	<inherits name='io.github.isoteriktech.xgdx' />
 
 	<inherits name='XGDXTest' />
 	<entry-point class='com.isoterik.xgdx.test.client.HtmlLauncher' />

@@ -17,7 +17,7 @@ gwt {
 import org.wisepersist.gradle.plugins.gwt.GwtSuperDev
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
 
-gretty.httpPort = 8080
+gretty.httpPort = 8081
 gretty.resourceBase = project.buildDir.path + "/gwt/draftOut"
 gretty.contextPath = "/"
 gretty.portPropertiesFileName = "TEMP_PORTS.properties"
@@ -84,7 +84,7 @@ task addSource {
 tasks.compileGwt.dependsOn(addSource)
 tasks.draftCompileGwt.dependsOn(addSource)
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 eclipse.project.name = appName + "-html"
