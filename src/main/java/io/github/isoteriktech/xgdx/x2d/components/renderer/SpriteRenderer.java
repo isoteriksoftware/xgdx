@@ -10,8 +10,8 @@ import com.badlogic.gdx.utils.Array;
 import io.github.isoteriktech.xgdx.Component;
 import io.github.isoteriktech.xgdx.GameCamera;
 import io.github.isoteriktech.xgdx.GameObject;
-import io.github.isoteriktech.xgdx.x2d.GameCamera2d;
 import io.github.isoteriktech.xgdx.utils.GameWorldUnits;
+import io.github.isoteriktech.xgdx.x2d.GameCamera2d;
 
 /**
  * Renders sprites ({@link Texture} or {@link TextureRegion}) when attached to a gameObject.

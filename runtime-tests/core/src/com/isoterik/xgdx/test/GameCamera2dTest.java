@@ -36,6 +36,7 @@ public class GameCamera2dTest extends Scene {
         tiledMapObject.addComponent(tiledMapRenderer);
 
         GameCamera2d camera2d = (GameCamera2d) getMainCamera();
+        camera2d.setCenterCameraOnResize(false);
         OrthographicCamera camera = camera2d.getCamera();
 
         input.addKeyListener(KeyTrigger.keyDownTrigger(KeyCodes.RIGHT).setPolled(true), (mappingName, eventData) -> {

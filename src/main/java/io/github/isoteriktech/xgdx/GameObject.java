@@ -1,6 +1,7 @@
 package io.github.isoteriktech.xgdx;
 
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 
 /**
  * A GameObject represents an entity in the game. A GameObject can't do anything on its own; you have to give it properties before it can do anything.
@@ -141,7 +142,7 @@ public class GameObject {
 
     public <T extends Component> void removeComponents(Class<T> componentClass) {
         for (Component c : components) {
-            if (componentClass.isAssignableFrom(c.getClass()))
+            if (ClassReflection.isAssignableFrom(componentClass, c.getClass()))
                 removeComponent(c);
         }
     }
@@ -155,7 +156,7 @@ public class GameObject {
      */
     public <T extends Component> T getComponent(Class<T> componentClass) {
         for (Component c : components) {
-            if (componentClass.isAssignableFrom(c.getClass()))
+            if (ClassReflection.isAssignableFrom(componentClass, c.getClass()))
                 return (T)c;
         }
 
@@ -172,7 +173,7 @@ public class GameObject {
         Array<T> comps = new Array<>();
 
         for (Component c : components) {
-            if (componentClass.isAssignableFrom(c.getClass()))
+            if (ClassReflection.isAssignableFrom(componentClass, c.getClass()))
                 comps.add((T)c);
         }
 
