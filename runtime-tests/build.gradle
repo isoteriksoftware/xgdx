@@ -30,6 +30,7 @@ allprojects {
         ashleyVersion = '1.7.3'
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.1.0'
+        xGdxVersion = '1.1.0-SNAPSHOT'
     }
 
     repositories {
@@ -108,7 +109,7 @@ project(":html") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion:sources"
         api "com.badlogicgames.gdx:gdx-box2d-gwt:$gdxVersion:sources"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion:sources"
-        api "io.github.isoteriktech:xgdx:1.0.1-SNAPSHOT:sources"
+        api "io.github.isoteriktech:xgdx:$xGdxVersion:sources"
     }
 }
 
@@ -121,6 +122,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
 
-        api "io.github.isoteriktech:xgdx:1.0.1-SNAPSHOT"
+        api "io.github.isoteriktech:xgdx:$xGdxVersion"
     }
 }

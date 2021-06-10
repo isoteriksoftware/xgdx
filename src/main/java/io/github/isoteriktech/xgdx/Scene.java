@@ -499,7 +499,7 @@ public class Scene {
      * @return all the game objects added to this scene
      */
     public Array<GameObject> getGameObjects() {
-        gameObjects.clear();
+        Array<GameObject> gameObjects = new Array<>();
 
         for (Layer layer : layers) {
             gameObjects.addAll(layer.getGameObjects());
@@ -608,7 +608,7 @@ public class Scene {
         this.resizedWidth = width;
         this.resizedHeight = height;
 
-        Array<GameObject> gameObjects = getGameObjects();
+        gameObjects = getGameObjects();
 
         for (GameObject go : gameObjects) {
             go.__forEachComponent(resizeIter);
@@ -624,7 +624,7 @@ public class Scene {
     public void __resume() {
         isActive = true;
 
-        Array<GameObject> gameObjects = getGameObjects();
+        gameObjects = getGameObjects();
 
         for (GameObject go : gameObjects) {
             go.__forEachComponent(resumeIter);
@@ -638,7 +638,7 @@ public class Scene {
     public void __pause() {
         isActive = false;
 
-        Array<GameObject> gameObjects = getGameObjects();
+        gameObjects = getGameObjects();
 
         for (GameObject go : gameObjects) {
             go.__forEachComponent(pauseIter);
@@ -655,7 +655,7 @@ public class Scene {
 
         input.__update();
 
-        Array<GameObject> gameObjects = getGameObjects();
+        gameObjects = getGameObjects();
 
         updateComponents(gameObjects, deltaTime);
 
@@ -668,7 +668,7 @@ public class Scene {
      * <strong>DO NOT CALL THIS METHOD!</strong>
      */
     public void __render() {
-        getGameObjects();
+        gameObjects = getGameObjects();
 
         // Render
         render();
@@ -728,7 +728,7 @@ public class Scene {
      * <strong>DO NOT CALL THIS METHOD!</strong>
      */
     public void __destroy() {
-        Array<GameObject> gameObjects = getGameObjects();
+        gameObjects = getGameObjects();
 
         for (GameObject go : gameObjects) {
             go.__forEachComponent(destroyIter);
