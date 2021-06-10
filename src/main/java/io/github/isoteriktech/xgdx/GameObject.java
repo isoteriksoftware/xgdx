@@ -1,7 +1,9 @@
 package io.github.isoteriktech.xgdx;
 
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
+import io.github.isoteriktech.xgdx.utils.PoolableArrayIterator;
 
 /**
  * A GameObject represents an entity in the game. A GameObject can't do anything on its own; you have to give it properties before it can do anything.
@@ -21,7 +23,7 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
  */
 public class GameObject {
     protected final Array<Component> components;
-    protected final Array.ArrayIterator<Component> componentArrayIterator;
+    protected final ComponentIteratorPool componentIteratorPool;
 
     public Transform transform;
 
@@ -34,8 +36,7 @@ public class GameObject {
 
     public GameObject(String tag) {
         components = new Array<>();
-        componentArrayIterator = new Array.ArrayIterator<>(components,
-                true);
+        componentIteratorPool = new ComponentIteratorPool(components);
 
         transform = new Transform();
         transform.__setGameObject(this);
@@ -210,10 +211,12 @@ public class GameObject {
      * @param iterationListener the iteration listener
      */
     public void __forEachComponent(__ComponentIterationListener iterationListener) {
+        PoolableArrayIterator<Component> componentArrayIterator = componentIteratorPool.obtain();
+
         while (componentArrayIterator.hasNext())
             iterationListener.onComponent(componentArrayIterator.next());
 
-        componentArrayIterator.reset();
+        componentIteratorPool.free(componentArrayIterator);
     }
 
     /**
@@ -230,6 +233,19 @@ public class GameObject {
      */
     public interface __ComponentIterationListener {
         void onComponent(Component component);
+    }
+
+    private class ComponentIteratorPool extends Pool<PoolableArrayIterator<Component>> {
+        private final Array<Component> componentArray;
+
+        public ComponentIteratorPool(Array<Component> componentArray) {
+            this.componentArray = componentArray;
+        }
+
+        @Override
+        protected PoolableArrayIterator<Component> newObject() {
+            return new PoolableArrayIterator<>(componentArray);
+        }
     }
 
     /**
