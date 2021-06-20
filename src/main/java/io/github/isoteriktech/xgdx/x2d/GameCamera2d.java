@@ -32,6 +32,7 @@ public class GameCamera2d extends GameCamera {
         super(viewport);
         spriteBatch = new SpriteBatch();
         this.backgroundColor = new Color(1, 0, 0, 1);
+        centerCameraOnResize = true;
     }
 
     /**

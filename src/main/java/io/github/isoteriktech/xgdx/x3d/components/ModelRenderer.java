@@ -41,6 +41,38 @@ public class ModelRenderer extends Component {
     public boolean isVisible()
     { return visible; }
 
+    public GameCamera3d getGameCamera() {
+        return gameCamera;
+    }
+
+    public void setGameCamera(GameCamera3d gameCamera) {
+        this.gameCamera = gameCamera;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    public ModelInstance getModelInstance() {
+        return modelInstance;
+    }
+
+    public void setModelInstance(ModelInstance modelInstance) {
+        this.modelInstance = modelInstance;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
     @Override
     public void postUpdate(float deltaTime) {
         Transform transform = gameObject.transform;

@@ -16,12 +16,6 @@ import io.github.isoteriktech.xgdx.x3d.components.ModelRenderer;
 public class GameCamera3dTest extends Scene {
     public GameCamera3dTest() {
         super(true);
-        setRenderCustomDebugLines(true);
-
-        GameObject bg = GameObject.newInstance();
-        bg.transform.setSize(gameWorldUnits.getWorldWidth(), gameWorldUnits.getWorldHeight());
-        bg.addComponent(new BoxDebugRenderer().setColor(Color.WHITE));
-        addGameObject(bg);
 
         ModelBuilder modelBuilder = new ModelBuilder();
         Model model = modelBuilder.createBox(1f, 1f, 1f,
@@ -32,12 +26,5 @@ public class GameCamera3dTest extends Scene {
         GameObject gameObject = GameObject.newInstance();
         gameObject.addComponent(modelRenderer);
         addGameObject(gameObject);
-
-        gameObject.addComponent(new Component(){
-            @Override
-            public void update(float deltaTime) {
-                gameObject.transform.rotation.y += 10 * deltaTime;
-            }
-        });
     }
 }

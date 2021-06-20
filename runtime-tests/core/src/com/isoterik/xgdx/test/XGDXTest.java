@@ -8,6 +8,6 @@ public class XGDXTest extends XGdxGame {
 	@Override
 	protected Scene initGame() {
 		splashTransition = SceneTransitions.fade(1f);
-		return new GameCamera3dTest();
+		return new SpriteRenderingTest();
 	}
 }

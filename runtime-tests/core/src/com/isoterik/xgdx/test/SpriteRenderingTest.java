@@ -1,11 +1,9 @@
 package com.isoterik.xgdx.test;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import io.github.isoteriktech.xgdx.GameObject;
 import io.github.isoteriktech.xgdx.Scene;
 import io.github.isoteriktech.xgdx.asset.GameAssetsLoader;
-import io.github.isoteriktech.xgdx.x2d.components.renderer.SpriteRenderer;
 
 public class SpriteRenderingTest extends Scene {
     public SpriteRenderingTest() {
@@ -15,7 +13,5 @@ public class SpriteRenderingTest extends Scene {
 
         GameObject badlogic = newSpriteObject(assetsLoader.regionForTexture("badlogic.jpg", true));
         addGameObject(badlogic);
-
-        Gdx.app.error("hmm", "" + badlogic.hasComponent(SpriteRenderer.class));
     }
 }
