@@ -683,7 +683,7 @@ public class Scene {
 
         // Draw the world canvas
         worldCanvas.draw();
-        
+
         // Draw the UI
         canvas.draw();
     }
