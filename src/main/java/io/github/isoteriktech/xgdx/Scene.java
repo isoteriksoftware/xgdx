@@ -12,6 +12,7 @@ import io.github.isoteriktech.xgdx.input.InputManager;
 import io.github.isoteriktech.xgdx.x2d.GameCamera2d;
 import io.github.isoteriktech.xgdx.x2d.components.renderer.SpriteRenderer;
 import io.github.isoteriktech.xgdx.utils.GameWorldUnits;
+import io.github.isoteriktech.xgdx.x3d.GameCamera3d;
 
 /**
  * A Scene contains the {@link GameObject}s of your game. Think of each Scene as a unique level of your game.
@@ -80,9 +81,10 @@ public class Scene {
     Array<GameObject> gameObjects = new Array<>();
 
     /**
-     * Creates a new instance given a gravity.
+     * Creates a new instance.
+     * @param is3dScene determines if this scene is a 3D scene or not.
      */
-    public Scene() {
+    public Scene(boolean is3dScene) {
         xGdx = XGdx.instance();
 
         onConstruction();
@@ -163,7 +165,12 @@ public class Scene {
 
         destroyIter = Component::destroy;
 
-        GameCamera camera = new GameCamera2d();
+        GameCamera camera;
+        if (is3dScene)
+            camera = new GameCamera3d();
+        else
+            camera = new GameCamera2d();
+
         mainCameraObject = GameObject.newInstance("MainCamera");
         mainCameraObject.addComponent(camera);
         addGameObject(mainCameraObject);
@@ -173,6 +180,13 @@ public class Scene {
         setupWorldCanvas(camera.getViewport());
 
         shapeRenderer = new ShapeRenderer();
+    }
+
+    /**
+     * Creates a new 2d scene.
+     */
+    public Scene() {
+        this(false);
     }
 
     /**

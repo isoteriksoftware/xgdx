@@ -1,14 +1,20 @@
 package io.github.isoteriktech.xgdx.x3d;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import io.github.isoteriktech.xgdx.GameCamera;
+import io.github.isoteriktech.xgdx.GameObject;
 import io.github.isoteriktech.xgdx.XGdx;
 import io.github.isoteriktech.xgdx.utils.GameWorldUnits;
 
 public class GameCamera3d extends GameCamera {
+    protected ModelBatch modelBatch;
+
     /**
      * Creates a new instance given a viewport.
      * * <strong>Note:</strong> an {@link com.badlogic.gdx.graphics.PerspectiveCamera} will be created if it doesn't exist.
@@ -21,6 +27,7 @@ public class GameCamera3d extends GameCamera {
     public GameCamera3d(Viewport viewport, float fieldOfView, float near, float far) {
         super(viewport);
         setup(viewport, fieldOfView, near, far);
+        modelBatch = new ModelBatch();
     }
 
     private void prepCamera(float near, float far) {
@@ -87,6 +94,32 @@ public class GameCamera3d extends GameCamera {
 
             viewport.setCamera(camera);
         }
+    }
+
+    public ModelBatch getModelBatch() {
+        return modelBatch;
+    }
+
+    public void setModelBatch(ModelBatch modelBatch) {
+        this.modelBatch = modelBatch;
+    }
+
+    @Override
+    public void destroy() {
+        if (modelBatch != null)
+            modelBatch.dispose();
+    }
+
+    @Override
+    public void preRender(Array<GameObject> gameObjects) {
+        camera.update();
+        ScreenUtils.clear(Color.BLACK, true);
+        modelBatch.begin(camera);
+    }
+
+    @Override
+    public void postRender(Array<GameObject> gameObjects) {
+        modelBatch.end();
     }
 }
 

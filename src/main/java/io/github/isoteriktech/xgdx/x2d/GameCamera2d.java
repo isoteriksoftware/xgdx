@@ -19,9 +19,9 @@ import io.github.isoteriktech.xgdx.utils.GameWorldUnits;
  * @author isoteriksoftware
  */
 public class GameCamera2d extends GameCamera {
-    private SpriteBatch spriteBatch;
+    protected SpriteBatch spriteBatch;
 
-    private Color backgroundColor;
+    protected Color backgroundColor;
 
     /**
      * Creates a new instance given a viewport.
