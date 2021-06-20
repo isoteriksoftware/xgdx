@@ -141,7 +141,7 @@ public final class XGdx {
     { return deltaTime; }
 
     /**
-     * This class defines default settings for some features of minGDX. The settings can always be changed.
+     * This class defines default settings for some features of xgdx. The settings can always be changed.
      *
      * It is useful for setting values that don't change or is not expected to change often.
      */
@@ -155,5 +155,15 @@ public final class XGdx {
 
         /** The default number of pixels that equals one world unit. */
         public float PIXELS_PER_UNIT = 100f;
+
+        /** the default camera field of view of the height, in degrees, the field of view for the width will be calculated
+            according to the aspect ratio. */
+        public float CAMERA_NEAR = 1f;
+
+        /** the default camera near clipping plane distance, has to be positive */
+        public float CAMERA_FAR = 300f;
+
+        /** the default camera far clipping plane distance, has to be positive */
+        public float CAMERA_FIELD_OF_VIEW = 67f;
     }
 }

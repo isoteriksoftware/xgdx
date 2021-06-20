@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import io.github.isoteriktech.xgdx.x2d.scenes.transition.ISceneTransition;
 
 /**
- * Your starter class must extend this class to make it a minGDX game.
+ * Your starter class must extend this class to make it an xgdx game.
  * <code>XGdxGame</code> initializes all the core systems and start your game.
  * <p>
  *

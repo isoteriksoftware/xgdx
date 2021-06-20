@@ -2,6 +2,7 @@ package io.github.isoteriktech.xgdx.x2d;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -31,13 +32,6 @@ public class GameCamera2d extends GameCamera {
         super(viewport);
         spriteBatch = new SpriteBatch();
         this.backgroundColor = new Color(1, 0, 0, 1);
-
-        if (camera == null || !(camera instanceof  OrthographicCamera)) {
-            camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
-            getCamera().setToOrtho(false, viewport.getWorldWidth(), viewport.getWorldHeight());
-        }
-
-        viewport.setCamera(camera);
     }
 
     /**
@@ -50,7 +44,7 @@ public class GameCamera2d extends GameCamera {
     }
 
     /**
-     * Creates a new scene. The screen dimensions defaults to (1280 x 720) taking 100 pixels per meter for unit conversions.
+     * Creates a new scene. The screen dimensions are taken from {@link XGdx#defaultSettings}
      * The viewport defaults to an {@link ExtendViewport}.
      */
     public GameCamera2d() {
@@ -93,9 +87,13 @@ public class GameCamera2d extends GameCamera {
     @Override
     public void setup(Viewport viewport) {
         super.setup(viewport);
-        camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
-        getCamera().setToOrtho(false, viewport.getWorldWidth(), viewport.getWorldHeight());
-        viewport.setCamera(camera);
+
+        if (camera == null || !(camera instanceof PerspectiveCamera)) {
+            camera = new OrthographicCamera(viewport.getWorldWidth(), viewport.getWorldHeight());
+            getCamera().setToOrtho(false, viewport.getWorldWidth(), viewport.getWorldHeight());
+            viewport.setCamera(camera);
+            camera.update();
+        }
     }
 
     @Override
