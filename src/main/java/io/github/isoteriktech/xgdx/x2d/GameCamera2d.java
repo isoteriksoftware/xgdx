@@ -94,6 +94,8 @@ public class GameCamera2d extends GameCamera {
             viewport.setCamera(camera);
             camera.update();
         }
+
+        viewport.apply(centerCameraOnResize);
     }
 
     @Override
@@ -122,6 +124,7 @@ public class GameCamera2d extends GameCamera {
     public void preRender(Array<GameObject> gameObjects) {
         ScreenUtils.clear(backgroundColor);
         camera.update();
+        viewport.apply(centerCameraOnResize);
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
     }

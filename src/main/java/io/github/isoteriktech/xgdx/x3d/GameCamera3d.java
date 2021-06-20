@@ -31,7 +31,7 @@ public class GameCamera3d extends GameCamera {
     }
 
     private void prepCamera(float near, float far) {
-        camera.position.set(0, 0, 0);
+        camera.position.set(10, 10, 5);
         camera.lookAt(0, 0, 0);
         camera.near = near;
         camera.far = far;
@@ -112,8 +112,8 @@ public class GameCamera3d extends GameCamera {
 
     @Override
     public void preRender(Array<GameObject> gameObjects) {
-        camera.update();
         ScreenUtils.clear(Color.BLACK, true);
+        viewport.apply(centerCameraOnResize);
         modelBatch.begin(camera);
     }
 

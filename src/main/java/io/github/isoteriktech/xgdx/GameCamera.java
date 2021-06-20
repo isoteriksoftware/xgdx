@@ -19,7 +19,7 @@ public class GameCamera extends Component {
 
     protected Viewport viewport;
 
-    protected boolean centerCameraOnResize = true;
+    protected boolean centerCameraOnResize = false;
 
     /**
      * Creates a new instance given a viewport.

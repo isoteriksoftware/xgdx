@@ -29,5 +29,7 @@ public class TiledMapTest extends Scene {
         GameObject tiledMapObject = GameObject.newInstance("TiledMap");
         addGameObject(tiledMapObject);
         tiledMapObject.addComponent(tiledMapRenderer);
+
+        getMainCamera().setCenterCameraOnResize(true);
     }
 }

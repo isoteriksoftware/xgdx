@@ -8,8 +8,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 
-		int width = 630;
-		int height = 252;
+		int width = 1280;
+		int height = 720;
 		config.setWindowedMode(width, height);
 		config.setResizable(true);
 		new Lwjgl3Application(new XGDXTest(), config);
