@@ -31,10 +31,10 @@ public class GameObject {
 
     protected Scene hostScene;
 
-    public GameObject()
+    protected GameObject()
     { this("Untagged"); }
 
-    public GameObject(String tag) {
+    protected GameObject(String tag) {
         components = new Array<>();
         componentIteratorPool = new ComponentIteratorPool(components);
 

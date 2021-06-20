@@ -62,8 +62,8 @@ public class Scene {
     /** {@link com.badlogic.gdx.scenes.scene2d.Stage} instance used for managing UI elements */
     protected Stage canvas;
 
-    /** {@link com.badlogic.gdx.scenes.scene2d.Stage} instance used for managing GameObjects that wants to use the Scene2d API for animations */
-    protected Stage animationCanvas;
+    /** {@link com.badlogic.gdx.scenes.scene2d.Stage} instance used for managing GameObjects that uses the Scene2d API. */
+    protected Stage worldCanvas;
 
     /** ShapeRenderer for debug drawings */
     protected ShapeRenderer shapeRenderer;
@@ -170,7 +170,7 @@ public class Scene {
 
         setupCanvas(new StretchViewport(gameWorldUnits.getScreenWidth(),
                 gameWorldUnits.getScreenHeight()));
-        setupAnimationCanvas(camera.getViewport());
+        setupWorldCanvas(camera.getViewport());
 
         shapeRenderer = new ShapeRenderer();
     }
@@ -258,8 +258,8 @@ public class Scene {
      * Use this method to change the viewport to your desired viewport.
      * @param viewport the viewport for scaling UI elements
      */
-    public void setupAnimationCanvas(Viewport viewport) {
-        animationCanvas = new Stage(viewport);
+    public void setupWorldCanvas(Viewport viewport) {
+        worldCanvas = new Stage(viewport);
     }
 
     /**
@@ -268,6 +268,10 @@ public class Scene {
      */
     public Stage getCanvas()
     { return canvas; }
+
+    public Stage getWorldCanvas() {
+        return worldCanvas;
+    }
 
     /**
      * A scene becomes active when the scene is resumed. It goes back to an inactive state when the scene is paused.
@@ -396,7 +400,7 @@ public class Scene {
 
         // If this game object is an ActorGameObject, add it to the animation canvas
         if (gameObject instanceof ActorGameObject)
-            animationCanvas.addActor(((ActorGameObject)gameObject).actorTransform.actor);
+            worldCanvas.addActor(((ActorGameObject)gameObject).actorTransform.actor);
 
         gameObject.__setHostScene(this);
         layer.addGameObject(gameObject);
@@ -417,7 +421,7 @@ public class Scene {
 
         // If this game object is an ActorGameObject, add it to the animation canvas
         if (gameObject instanceof ActorGameObject)
-            animationCanvas.addActor(((ActorGameObject)gameObject).actorTransform.actor);
+            worldCanvas.addActor(((ActorGameObject)gameObject).actorTransform.actor);
 
         gameObject.__setHostScene(this);
         layer.addGameObject(gameObject);
@@ -432,7 +436,7 @@ public class Scene {
     public void addGameObject(GameObject gameObject) {
         // If this game object is an ActorGameObject, add it to the animation canvas
         if (gameObject instanceof ActorGameObject)
-            animationCanvas.addActor(((ActorGameObject)gameObject).actorTransform.actor);
+            worldCanvas.addActor(((ActorGameObject)gameObject).actorTransform.actor);
 
         gameObject.__setHostScene(this);
         defaultLayer.addGameObject(gameObject);
@@ -659,7 +663,7 @@ public class Scene {
 
         updateComponents(gameObjects, deltaTime);
 
-        animationCanvas.act(deltaTime);
+        worldCanvas.act(deltaTime);
         canvas.act(deltaTime);
     }
 
@@ -677,6 +681,9 @@ public class Scene {
         if (renderCustomDebugLines)
             renderDebugDrawings();
 
+        // Draw the world canvas
+        worldCanvas.draw();
+        
         // Draw the UI
         canvas.draw();
     }

@@ -71,6 +71,18 @@ public class Transform extends Component {
     public void setSize(float width, float height)
     { setSize(width, height, size.z); }
 
+    public void setWidth(float width) {
+        this.size.x = width;
+    }
+
+    public void setHeight(float height) {
+        this.size.y = height;
+    }
+
+    public void setDepth(float depth) {
+        this.size.z = depth;
+    }
+
     /**
      * Sets the position of the host game object.
      * @param x position on the x-axis
@@ -88,6 +100,18 @@ public class Transform extends Component {
     public void setPosition(float x, float y)
     { setPosition(x, y, position.z); }
 
+    public void setX(float x) {
+        this.position.x = x;
+    }
+
+    public void setY(float y) {
+        this.position.y = y;
+    }
+
+    public void setZ(float z) {
+        this.position.z = z;
+    }
+
     /**
      * Sets the scale of the host game object.
      * @param scaleX scale on the x-axis
@@ -104,6 +128,18 @@ public class Transform extends Component {
      */
     public void setScale(float scaleX, float scaleY)
     { setScale(scaleX, scaleY, scale.z); }
+
+    public void setScaleX(float scaleX) {
+        this.scale.x = scaleX;
+    }
+
+    public void setScaleY(float scaleY) {
+        this.scale.y = scaleY;
+    }
+
+    public void setScaleZ(float scaleZ) {
+        this.scale.z = scaleZ;
+    }
 
     /**
      * Sets the rotation of the host game object.

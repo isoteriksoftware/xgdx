@@ -2,12 +2,37 @@ package io.github.isoteriktech.xgdx;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * An ActorTransform holds a reference to an {@link Actor}. The transform will copy the properties of the actor every
+ * frame. This allows {@link GameObject}s to use Scene2d APIs.
+ * <p>
+ * Because this transform will always copy the properties of the referenced Actor, modifying the transform properties
+ * will not work because those modifications will be overwritten in the next frame update. A workaround is to
+ * use the setter methods of the transform to manipulate it. This will automatically sync the actor with it. Another
+ * workaround is to simply modify the referenced Actor directly. The transform will be automatically synced.
+ * <p>
+ * <strong>Note:</strong> the referenced actor will be rendered if it can be rendered. If the intention is to simply use
+ * the animation API of Scene2d, a blank Actor that cannot render will be more appropriate.
+ *
+ * @author isoterik
+ */
 public class ActorTransform extends Transform {
     /** A reference to the {@link Actor} instance for this transform. */
-    public final Actor actor;
+    public Actor actor;
 
+    /**
+     * Creates a new instance given the Actor to reference.
+     * @param actor the referenced actor
+     */
+    public ActorTransform(Actor actor) {
+        this.actor = actor;
+    }
+
+    /**
+     * Creates a new instance. A blank Actor will be created and referenced.
+     */
     public ActorTransform() {
-        actor = new Actor();
+        this(new Actor());
     }
 
     @Override
@@ -35,6 +60,18 @@ public class ActorTransform extends Transform {
     }
 
     @Override
+    public void setX(float x) {
+        super.setX(x);
+        actor.setX(x);
+    }
+
+    @Override
+    public void setY(float y) {
+        super.setY(y);
+        actor.setY(y);
+    }
+
+    @Override
     public void setRotation(float rotation) {
         super.setRotation(rotation);
         actor.setRotation(rotation);
@@ -53,6 +90,18 @@ public class ActorTransform extends Transform {
     }
 
     @Override
+    public void setScaleX(float scaleX) {
+        super.setScaleX(scaleX);
+        actor.setScaleX(scaleX);
+    }
+
+    @Override
+    public void setScaleY(float scaleY) {
+        super.setScaleY(scaleY);
+        actor.setScaleY(scaleY);
+    }
+
+    @Override
     public void setScale(float scaleX, float scaleY, float scaleZ) {
         super.setScale(scaleX, scaleY, scaleZ);
         actor.setScale(scaleX, scaleY);
@@ -68,6 +117,18 @@ public class ActorTransform extends Transform {
     public void setSize(float width, float height, float depth) {
         super.setSize(width, height, depth);
         actor.setSize(width, height);
+    }
+
+    @Override
+    public void setWidth(float width) {
+        super.setWidth(width);
+        actor.setWidth(width);
+    }
+
+    @Override
+    public void setHeight(float height) {
+        super.setHeight(height);
+        actor.setHeight(height);
     }
 
     @Override
@@ -113,14 +174,6 @@ public class ActorTransform extends Transform {
     @Override
     public float getY() {
         return actor.getY();
-    }
-
-    /**
-     * Returns the {@link Actor} instance for this transform.
-     * @return the {@link Actor} instance for this transform.
-     */
-    public Actor getActor() {
-        return actor;
     }
 
     @Override
