@@ -1,8 +1,10 @@
 package io.github.isoteriktech.xgdx.x3d.components;
 
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import io.github.isoteriktech.xgdx.Component;
 import io.github.isoteriktech.xgdx.GameCamera;
@@ -15,6 +17,7 @@ public class ModelRenderer extends Component {
 
     protected Model model;
     protected ModelInstance modelInstance;
+    protected Environment environment;
 
     protected boolean visible;
 
@@ -39,11 +42,12 @@ public class ModelRenderer extends Component {
     { return visible; }
 
     @Override
-    public void preUpdate(float deltaTime) {
+    public void postUpdate(float deltaTime) {
         Transform transform = gameObject.transform;
         Matrix4 matrix = modelInstance.transform;
 
-
+        matrix.setFromEulerAngles(transform.getRotationZ(), transform.getRotationY(), transform.getRotationX())
+            .trn(transform.position).scl(transform.scale);
     }
 
     @Override
@@ -61,7 +65,15 @@ public class ModelRenderer extends Component {
             gameCamera = (GameCamera3d) camera;
         }
 
-        gameCamera.getModelBatch().render(modelInstance);
+        // Use the default mainCamera environment if none is provided
+        if (environment == null) {
+            environment = gameCamera.getEnvironment();
+        }
+
+        if (environment == null)
+            gameCamera.getModelBatch().render(modelInstance);
+        else
+            gameCamera.getModelBatch().render(modelInstance, environment);
     }
 }
 
