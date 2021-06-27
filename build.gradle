@@ -7,7 +7,7 @@ plugins {
 
 ext {
     PUBLISH_GROUP_ID = 'io.github.isoteriktech'
-    PUBLISH_VERSION = '1.2.0'
+    PUBLISH_VERSION = '1.2.1'
     PUBLISH_ARTIFACT_ID = 'xgdx'
 }
 
@@ -34,7 +34,6 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 
     implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
 }
 
 test {

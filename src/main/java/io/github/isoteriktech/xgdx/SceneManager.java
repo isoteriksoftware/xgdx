@@ -128,14 +128,10 @@ public final class SceneManager {
                 // enable input for next screen
                 Gdx.input.setInputProcessor(nextScene.getInput().getInputMultiplexer());
 
-                //notify the scenes of
-                //transition completion
-                if(sceneTransition != null) {
-                    if (currScene != null)
-                        currScene.transitionedFromThisScene(nextScene);
-                    if (nextScene != null)
-                        nextScene.transitionedToThisScene(currScene);
-                }
+                // cache the variables
+                Scene tempCurr = currScene;
+                Scene tempNext = nextScene;
+                ISceneTransition tempTransition = sceneTransition;
 
                 // dispose the current scene if it cannot be stacked
                 if (currScene != null && !currScene.isStackable())
@@ -145,6 +141,13 @@ public final class SceneManager {
                 currScene = nextScene;
                 nextScene = null;
                 sceneTransition = null;
+
+                //notify the scenes of
+                //transition completion
+                if (tempCurr != null)
+                    tempCurr.transitionedFromThisScene(tempNext);
+                if (tempNext != null)
+                    tempNext.transitionedToThisScene(tempCurr);
             }
             else {
                 // render screens to FBOs

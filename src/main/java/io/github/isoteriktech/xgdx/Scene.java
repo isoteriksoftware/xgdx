@@ -760,14 +760,14 @@ public class Scene {
 
     /**
      * Called when a transition was made from this scene to another scene.
-     * <strong>This wont be called if there was no transition animation set to leave this scene!</strong>
+     * <strong>This will still be called even when there was no transition animation set to enter this scene!</strong>
      * @param nextScene the scene that was transitioned to
      */
     public void transitionedFromThisScene(Scene nextScene) {}
 
     /**
      * Called when a transition was made from another scene to this scene.
-     * <strong>This wont be called if there was no transition animation set to enter this scene!</strong>
+     * <strong>This will still be called even when there was no transition animation set to enter this scene!</strong>
      * @param previousScene the scene that was transitioned from
      */
     public void transitionedToThisScene(Scene previousScene) {}
